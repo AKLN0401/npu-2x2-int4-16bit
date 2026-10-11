@@ -125,7 +125,7 @@
 
 <!-- ============================================================ -->
 <h2 id="how">2. How it works</h2>
-<p>The chip is a small matrix-multiply engine without a CPU. A CPU does not fit in one tile: TinyQV alone synthesizes to ~65.6k&nbsp;µm², 3.6× the 17,955&nbsp;µm² die. The microcontroller on the Tiny Tapeout demo board acts as the host instead: it writes operands into the chip over the pins, tells it to step, and reads the results back.</p>
+<p>The chip is a small matrix-multiply engine. The microcontroller on the Tiny Tapeout demo board acts as the host: it writes operands into the chip over the pins, tells it to step, and reads the results back.</p>
 <ol class="how">
   <li><b>Write a register.</b> The host puts the address on <code>uio[2:0]</code> and the byte on <code>ui[7:0]</code>, then raises the strobe <code>uio[3]</code>. The strobe is synchronized to the chip clock (2 flops) and its rising edge loads the byte (§7).</li>
   <li><b>Load operands.</b> <code>A0</code> holds two int4 values <code>a[0]</code>, <code>a[1]</code> (one column of A), <code>B0</code> holds <code>b[0]</code>, <code>b[1]</code> (one row of B).</li>
