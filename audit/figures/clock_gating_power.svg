@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="396" viewBox="0 0 880 396" font-family="'Inter Tight','Helvetica Neue',Arial,sans-serif" role="img" aria-label="Core power with and without clock gating for four workloads">
+<rect x="0.5" y="0.5" width="879" height="395" rx="6" fill="#f0eee6" stroke="#e3e0d6"/>
+<text x="24" y="40" font-size="15" font-weight="600" fill="#141413">Clock gating saves 58.6% of core power when idle, 48–58% under load</text>
+<text x="24" y="62" font-size="12.5" fill="#5e5d59">Post-PnR netlist, 50 MHz, typical corner (tt 25 °C 1.80 V). Vector-based: gate-level VCD → OpenSTA with routed SPEF.</text>
+<rect x="24" y="84" width="12" height="12" rx="2" fill="#c96442"/><text x="42" y="94.5" font-size="12.5" fill="#5e5d59">Clock gating on</text>
+<rect x="160" y="84" width="12" height="12" rx="2" fill="#3a68a8"/><text x="178" y="94.5" font-size="12.5" fill="#5e5d59">No clock gating (row clocks forced on by test_mode)</text>
+<line x1="220.0" y1="114" x2="220.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="220.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="start">0</text>
+<line x1="285.0" y1="114" x2="285.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="285.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="middle">100</text>
+<line x1="350.0" y1="114" x2="350.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="350.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="middle">200</text>
+<line x1="415.0" y1="114" x2="415.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="415.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="middle">300</text>
+<line x1="480.0" y1="114" x2="480.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="480.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="middle">400</text>
+<line x1="545.0" y1="114" x2="545.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="545.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="middle">500</text>
+<line x1="610.0" y1="114" x2="610.0" y2="322" stroke="#e3e0d6" stroke-width="1"/>
+<text x="610.0" y="340" font-size="11.5" fill="#5e5d59" text-anchor="end">600</text>
+<text x="856" y="340" font-size="11.5" fill="#5e5d59" text-anchor="end">µW</text>
+<text x="24" y="130" font-size="13.5" fill="#141413">Idle</text>
+<text x="24" y="147" font-size="12" fill="#5e5d59">clock running, no host writes</text>
+<path d="M220.0,120 h120.3 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-120.3 z" fill="#c96442"/><title>Idle, clock gating on: 191 µW</title>
+<path d="M220.0,134 h296.0 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-296.0 z" fill="#3a68a8"/><title>Idle, no clock gating: 462 µW</title>
+<text x="856" y="130" font-size="13.5" font-weight="600" fill="#141413" text-anchor="end">−58.6%</text>
+<text x="856" y="147" font-size="12" fill="#5e5d59" text-anchor="end">191 → 462 µW, 270 µW saved</text>
+<text x="24" y="184" font-size="13.5" fill="#141413">Slow host</text>
+<text x="24" y="201" font-size="12" fill="#5e5d59">1 write / 100 clocks</text>
+<path d="M220.0,174 h124.3 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-124.3 z" fill="#c96442"/><title>Slow host, clock gating on: 197 µW</title>
+<path d="M220.0,188 h299.4 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-299.4 z" fill="#3a68a8"/><title>Slow host, no clock gating: 467 µW</title>
+<text x="856" y="184" font-size="13.5" font-weight="600" fill="#141413" text-anchor="end">−57.7%</text>
+<text x="856" y="201" font-size="12" fill="#5e5d59" text-anchor="end">197 → 467 µW, 269 µW saved</text>
+<text x="24" y="238" font-size="13.5" fill="#141413">Max bus rate</text>
+<text x="24" y="255" font-size="12" fill="#5e5d59">1 step / 21 clocks, both rows</text>
+<path d="M220.0,228 h175.8 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-175.8 z" fill="#c96442"/><title>Max bus rate, clock gating on: 277 µW</title>
+<path d="M220.0,242 h342.8 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-342.8 z" fill="#3a68a8"/><title>Max bus rate, no clock gating: 534 µW</title>
+<text x="856" y="238" font-size="13.5" font-weight="600" fill="#141413" text-anchor="end">−48.2%</text>
+<text x="856" y="255" font-size="12" fill="#5e5d59" text-anchor="end">277 → 534 µW, 257 µW saved</text>
+<text x="24" y="292" font-size="13.5" fill="#141413">Max bus rate, row 1 off</text>
+<text x="24" y="309" font-size="12" fill="#5e5d59">ROWEN = 01</text>
+<path d="M220.0,282 h165.0 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-165.0 z" fill="#c96442"/><title>Max bus rate, row 1 off, clock gating on: 260 µW</title>
+<path d="M220.0,296 h336.3 a4,4 0 0 1 4,4 v4 a4,4 0 0 1 -4,4 h-336.3 z" fill="#3a68a8"/><title>Max bus rate, row 1 off, no clock gating: 524 µW</title>
+<text x="856" y="292" font-size="13.5" font-weight="600" fill="#141413" text-anchor="end">−50.3%</text>
+<text x="856" y="309" font-size="12" fill="#5e5d59" text-anchor="end">260 → 524 µW, 264 µW saved</text>
+</svg>

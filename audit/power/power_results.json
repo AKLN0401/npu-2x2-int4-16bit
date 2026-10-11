@@ -1,0 +1,290 @@
+{
+ "idle|tt_025C_1v80": {
+  "gated": {
+   "Sequential": 67.86394,
+   "Combinational": 0.005752107,
+   "Clock": 123.38489999999999,
+   "Total": 191.25469999999999,
+   "leak": 0.008353974,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 195.4562,
+   "Combinational": 0.0057384,
+   "Clock": 266.041,
+   "Total": 461.5029,
+   "leak": 0.008353338,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "idle|ff_n40C_1v95": {
+  "gated": {
+   "Sequential": 79.01588,
+   "Combinational": 0.01531273,
+   "Clock": 141.5223,
+   "Total": 220.55349999999999,
+   "leak": 0.020747520000000002,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 227.5793,
+   "Combinational": 0.015271809999999999,
+   "Clock": 304.9509,
+   "Total": 532.5454,
+   "leak": 0.02034946,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "idle|ss_n40C_1v60": {
+  "gated": {
+   "Sequential": 52.026379999999996,
+   "Combinational": 0.0028109529999999997,
+   "Clock": 94.86989,
+   "Total": 146.8991,
+   "leak": 0.004325142,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 149.88840000000002,
+   "Combinational": 0.0028007740000000002,
+   "Clock": 204.71970000000002,
+   "Total": 354.611,
+   "leak": 0.0042924040000000005,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "max_r11|tt_025C_1v80": {
+  "gated": {
+   "Sequential": 79.38314000000001,
+   "Combinational": 66.93327,
+   "Clock": 130.3388,
+   "Total": 276.6553,
+   "leak": 0.007691866999999999,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 200.9019,
+   "Combinational": 66.65225,
+   "Clock": 266.04089999999997,
+   "Total": 533.5948999999999,
+   "leak": 0.007689551,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "max_r11|ff_n40C_1v95": {
+  "gated": {
+   "Sequential": 92.17434,
+   "Combinational": 75.07889999999999,
+   "Clock": 149.4921,
+   "Total": 316.74539999999996,
+   "leak": 0.01863809,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 233.6659,
+   "Combinational": 74.76828,
+   "Clock": 304.9513,
+   "Total": 613.3855,
+   "leak": 0.01825283,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "max_r11|ss_n40C_1v60": {
+  "gated": {
+   "Sequential": 61.0445,
+   "Combinational": 51.82501,
+   "Clock": 100.175,
+   "Total": 213.0446,
+   "leak": 0.00369823,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 154.2482,
+   "Combinational": 51.59176,
+   "Clock": 204.7195,
+   "Total": 410.5594,
+   "leak": 0.003665058,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "max_r01|tt_025C_1v80": {
+  "gated": {
+   "Sequential": 75.41643,
+   "Combinational": 57.72389,
+   "Clock": 126.885,
+   "Total": 260.02540000000005,
+   "leak": 0.007841308,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 199.9723,
+   "Combinational": 57.58134,
+   "Clock": 266.04089999999997,
+   "Total": 523.5945,
+   "leak": 0.007839915000000001,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "max_r01|ff_n40C_1v95": {
+  "gated": {
+   "Sequential": 87.58967,
+   "Combinational": 64.86699,
+   "Clock": 145.5323,
+   "Total": 297.9891,
+   "leak": 0.01896985,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 232.6176,
+   "Combinational": 64.70942,
+   "Clock": 304.9513,
+   "Total": 602.2783000000001,
+   "leak": 0.018579210000000002,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "max_r01|ss_n40C_1v60": {
+  "gated": {
+   "Sequential": 57.985400000000006,
+   "Combinational": 44.70681,
+   "Clock": 97.54424,
+   "Total": 200.2364,
+   "leak": 0.0037109990000000004,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 153.5186,
+   "Combinational": 44.58741,
+   "Clock": 204.7195,
+   "Total": 402.8254,
+   "leak": 0.003677981,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "slow_r11|tt_025C_1v80": {
+  "gated": {
+   "Sequential": 68.68723,
+   "Combinational": 4.865605,
+   "Clock": 123.87429999999999,
+   "Total": 197.4271,
+   "leak": 0.00765007,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 195.8521,
+   "Combinational": 4.845765,
+   "Clock": 266.041,
+   "Total": 466.739,
+   "leak": 0.007645564,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "slow_r11|ff_n40C_1v95": {
+  "gated": {
+   "Sequential": 79.95588,
+   "Combinational": 5.467809,
+   "Clock": 142.0832,
+   "Total": 227.5067,
+   "leak": 0.01866574,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 228.0216,
+   "Combinational": 5.445844,
+   "Clock": 304.9509,
+   "Total": 538.4181,
+   "leak": 0.01825321,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ },
+ "slow_r11|ss_n40C_1v60": {
+  "gated": {
+   "Sequential": 52.67102,
+   "Combinational": 3.764872,
+   "Clock": 95.24325,
+   "Total": 151.6792,
+   "leak": 0.003703577,
+   "ann": [
+    4546,
+    0
+   ]
+  },
+  "forced": {
+   "Sequential": 150.20530000000002,
+   "Combinational": 3.748409,
+   "Clock": 204.71970000000002,
+   "Total": 358.6737,
+   "leak": 0.003668171,
+   "ann": [
+    4546,
+    0
+   ]
+  }
+ }
+}
