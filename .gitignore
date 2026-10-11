@@ -27,5 +27,3 @@ tools/.venv
 tools/.precheck-py
 __pycache__/
 
-# local decision log (not published)
-MEMORY.md

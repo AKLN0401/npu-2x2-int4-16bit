@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Inter+Tight:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  /* Same tokens as ../../docs/overview.html (akln0401.github.io/portfolio, warm editorial theme) */
   :root {
     --ink: #141413; --paper: #faf9f5; --paper-raised: #f0eee6; --muted: #5e5d59; --line: #e3e0d6;
     --clay: #c96442;
@@ -129,23 +128,23 @@
 
 <p class="label">Tiny Tapeout · SkyWater SKY130 · TTSKY26d · 1×1 tile</p>
 <h1>A one-tile int4 NPU</h1>
-<p class="sub">The chip actually submitted to TTSKY26d: a stand-alone int4 MAC array with per-row clock gating and full scan, driven from pins by the demo board's microcontroller. Top module <code>tt_um_akln0401_npu</code>.</p>
+<p class="sub">A chip for the Tiny Tapeout TTSKY26d shuttle: a stand-alone int4 MAC array with per-row clock gating and full scan, driven from pins by the demo board's microcontroller. Top module <code>tt_um_akln0401_npu</code>.</p>
 
 <dl class="facts">
   <div><dt>Why</dt><dd>Budget is one tile. TinyQV alone synthesizes to ~65.6k&nbsp;µm², a 1×1 die is 17,955&nbsp;µm² — no CPU fits. The RP2040/RP2350 on the demo board plays host CPU instead</dd></div>
-  <div><dt>Array</dt><dd><b>2×2</b> int4 outer-product array with <b>16-bit</b> accumulators, <code>acc[i][j] += a[i]·b[j]</code> (RTL is parameterized; 2×3 does not fit in one tile, see §13)</dd></div>
+  <div><dt>Array</dt><dd><b>2×2</b> int4 outer-product array with <b>16-bit</b> accumulators, <code>acc[i][j] += a[i]·b[j]</code> (RTL is parameterized; 2×3 does not fit in one tile)</dd></div>
   <div><dt>Interface</dt><dd>Byte-wide register bus on pins: <code>ui[7:0]</code> data in, <code>uo[7:0]</code> data out, <code>uio[2:0]</code> address, <code>uio[3]</code> write strobe</dd></div>
   <div><dt>Goals kept</dt><dd>AI accelerator, one ICG per row, every functional flop on a scan chain to pins</dd></div>
   <div><dt>Clock</dt><dd>50&nbsp;MHz (20&nbsp;ns), all 12 corners incl. ss_n40C_1v60 — worst setup +5.70&nbsp;ns, hold +0.162&nbsp;ns</dd></div>
-  <div><dt>Status</dt><dd>Layout final and signed off locally: DRC / LVS / antenna 0, TT precheck 15/15, timing clean at all 12 corners. Verified: RTL and gate-level cocotb 8/8, gate level with SDF delays 8/8 at 4 corners, RTL-vs-netlist random co-simulation 26M cycles with 0 mismatches. Left: git repo + GitHub <code>gds</code> action, submission (§4)</dd></div>
+  <div><dt>Status</dt><dd>Layout final and signed off locally: DRC / LVS / antenna 0, TT precheck 15/15, timing clean at all 12 corners. Verified: RTL and gate-level cocotb 8/8, gate level with SDF delays 8/8 at 4 corners, RTL-vs-netlist random co-simulation 26M cycles with 0 mismatches. Next: GitHub <code>gds</code> action and submission (§4)</dd></div>
   <div><dt>Deadline</dt><dd>2026-11-30</dd></div>
 </dl>
 
 <nav>
   <a href="#specs">Specs</a><a href="#how">How it works</a><a href="#layout">Layout &amp; 3D</a><a href="#tapeout">Tapeout</a>
-  <a href="#check">Design check</a><a href="#plan">Plan</a><a href="#system">System</a><a href="#regs">Registers</a>
+  <a href="#system">System</a><a href="#regs">Registers</a>
   <a href="#protocol">Write protocol</a><a href="#array">MAC array</a><a href="#cg">Clock gating</a><a href="#dft">Scan chain</a>
-  <a href="#area">Area</a><a href="#pins">Pinout</a><a href="#host">Host code</a>
+  <a href="#pins">Pinout</a><a href="#host">Host code</a>
 </nav>
 
 <!-- ============================================================ -->
@@ -178,18 +177,18 @@
 <h2 id="how">2. How it works</h2>
 <p>The chip is a small matrix-multiply engine without a CPU. The microcontroller on the Tiny Tapeout demo board acts as the host: it writes operands into the chip over the pins, tells it to step, and reads results back.</p>
 <ol class="how">
-  <li><b>Write a register.</b> The host puts the address on <code>uio[2:0]</code> and the byte on <code>ui[7:0]</code>, then raises the strobe <code>uio[3]</code>. The strobe is synchronized to the chip clock (2 flops) and its rising edge loads the byte (§9).</li>
+  <li><b>Write a register.</b> The host puts the address on <code>uio[2:0]</code> and the byte on <code>ui[7:0]</code>, then raises the strobe <code>uio[3]</code>. The strobe is synchronized to the chip clock (2 flops) and its rising edge loads the byte (§7).</li>
   <li><b>Load operands.</b> <code>A0</code> holds two int4 values <code>a[0]</code>, <code>a[1]</code> (one column of A), <code>B0</code> holds <code>b[0]</code>, <code>b[1]</code> (one row of B).</li>
   <li><b>Step.</b> A <code>CTRL</code> step (or, in auto mode, any <code>B1</code> write) opens each enabled row's clock gate for exactly one cycle, and all four PEs add <code>a[i]·b[j]</code> to their accumulator. <code>K</code> steps compute a 2×2 block of <code>C = A·B</code> with inner dimension <code>K</code> (up to 511 without overflow).</li>
   <li><b>Read back.</b> Writing <code>RSEL</code> picks an accumulator and a byte; <code>uo[7:0]</code> then shows that byte. Four reads give the 32-bit sign-extended value.</li>
-  <li><b>Sleep between steps.</b> When nothing is stepping, the row clock gates are closed: the 64 accumulator flops and their clock tree get no clock edges, which is where the power saving comes from (§11).</li>
-  <li><b>Test on silicon.</b> <code>test_mode</code> (<code>uio[4]</code>) forces the clocks on and links all 96 flops into one shift register from <code>uio[6]</code> to <code>uio[7]</code>, so any internal state can be loaded and read out on the bench (§12).</li>
+  <li><b>Sleep between steps.</b> When nothing is stepping, the row clock gates are closed: the 64 accumulator flops and their clock tree get no clock edges, which is where the power saving comes from (§9).</li>
+  <li><b>Test on silicon.</b> <code>test_mode</code> (<code>uio[4]</code>) forces the clocks on and links all 96 flops into one shift register from <code>uio[6]</code> to <code>uio[7]</code>, so any internal state can be loaded and read out on the bench (§10).</li>
 </ol>
-<p>Block diagram in §7, register map in §8, host code in §15.</p>
+<p>Block diagram in §5, register map in §6, host code in §12.</p>
 
 <!-- ============================================================ -->
 <h2 id="layout">3. Layout: GDS and 3D model</h2>
-<p>The final GDS from the place-and-route run (<code>runs/wokwi</code>, LibreLane 3.0.14), rendered with KLayout. It has 39 rows of standard cells (2.72&nbsp;µm each). The tile's 4 pairs of vertical met4 power stripes cross the whole tile, and the 43 signal pins sit on the top edge, where the Tiny Tapeout mux connects them.</p>
+<p>The final GDS from the place-and-route run (LibreLane 3.0.14), rendered with KLayout. It has 39 rows of standard cells (2.72&nbsp;µm each). The tile's 4 pairs of vertical met4 power stripes cross the whole tile, and the 43 signal pins sit on the top edge, where the Tiny Tapeout mux connects them.</p>
 <div class="shot"><img data-asset="gds" alt="Final GDS of the tile, all layers, SKY130 KLayout colours" width="1400" height="968"></div>
 <p class="cap">Figure 1 — The whole tile, all layers, SKY130 colours. The fine texture is the standard cells (diffusion, poly, local interconnect); the line grid on top is the met1–met4 routing and power.</p>
 <div class="shot dark"><img data-asset="routing" alt="Routing layers only on a dark background" width="1400" height="968"></div>
@@ -207,23 +206,23 @@
 <p>Signoff on the final layout. The local flow is the same as Tiny Tapeout's GitHub <code>gds</code> action (<code>tt-support-tools</code> + LibreLane 3.0.14), and the precheck is the same set of checks the shuttle runs.</p>
 <table>
   <tr><th>Check</th><th>Result</th><th>Evidence</th></tr>
-  <tr><td>Physical: Magic DRC, LVS, antenna, routing DRC (flow)</td><td><span class="pill p-ok">0 / 0 / 0 / 0</span></td><td><code>runs/wokwi/final/metrics.json</code></td></tr>
-  <tr><td>TT precheck: Magic + KLayout DRC (FEOL, BEOL, off-grid), pins, boundary, power, layers</td><td><span class="pill p-ok">15 / 15</span></td><td><code>runs/precheck_2x2_16_50mhz.log</code></td></tr>
+  <tr><td>Physical: Magic DRC, LVS, antenna, routing DRC (flow)</td><td><span class="pill p-ok">0 / 0 / 0 / 0</span></td><td>LibreLane signoff</td></tr>
+  <tr><td>TT precheck: Magic + KLayout DRC (FEOL, BEOL, off-grid), pins, boundary, power, layers</td><td><span class="pill p-ok">15 / 15</span></td><td>same checks as the shuttle</td></tr>
   <tr><td>Setup, 12 corners</td><td><span class="pill p-ok">+5.70 ns</span> worst at ss, −40&nbsp;°C, 1.60&nbsp;V</td><td>0 violations</td></tr>
   <tr><td>Hold, 12 corners</td><td><span class="pill p-ok">+0.162 ns</span> worst at ff, −40&nbsp;°C, 1.95&nbsp;V</td><td>0 violations</td></tr>
-  <tr><td>Max slew / max cap</td><td><span class="pill p-warn">10 / 0</span> slew ≤ 0.84&nbsp;ns vs 0.75 limit, cold slow corner only</td><td>read-mux select nets; already in the timing numbers (§13)</td></tr>
-  <tr><td>Power grid, IR drop</td><td><span class="pill p-ok">0 violations</span> worst drop 0.07&nbsp;mV</td><td><code>metrics.json</code></td></tr>
-  <tr><td>RTL simulation (cocotb, through the pins)</td><td><span class="pill p-ok">8 / 8</span></td><td><code>runs/tests_2x2_16_50mhz.log</code></td></tr>
+  <tr><td>Max slew / max cap</td><td><span class="pill p-warn">10 / 0</span> slew ≤ 0.84&nbsp;ns vs 0.75 limit, cold slow corner only</td><td>on the read-mux select nets, not a clock or critical path; already in the timing numbers</td></tr>
+  <tr><td>Power grid, IR drop</td><td><span class="pill p-ok">0 violations</span> worst drop 0.07&nbsp;mV</td><td>LibreLane signoff</td></tr>
+  <tr><td>RTL simulation (cocotb, through the pins)</td><td><span class="pill p-ok">8 / 8</span></td><td><code>test/</code></td></tr>
   <tr><td>Gate-level simulation of the PnR netlist</td><td><span class="pill p-ok">8 / 8</span></td><td>same log</td></tr>
-  <tr><td>Gate level with SDF delays at 50&nbsp;MHz (ss −40&nbsp;°C, ss 100&nbsp;°C, tt, ff −40&nbsp;°C)</td><td><span class="pill p-ok">8 / 8 each</span></td><td><code>runs/sdf/sdf_&lt;corner&gt;.log</code></td></tr>
-  <tr><td>RTL vs. netlist random co-simulation, every output every cycle</td><td><span class="pill p-ok">0 mismatches</span> 20M cycles + 6M with SDF at 3 corners</td><td><code>runs/cosim/</code>; 3 planted RTL bugs all caught</td></tr>
+  <tr><td>Gate level with SDF delays at 50&nbsp;MHz (ss −40&nbsp;°C, ss 100&nbsp;°C, tt, ff −40&nbsp;°C)</td><td><span class="pill p-ok">8 / 8 each</span></td><td><code>test/extra/sdf/</code></td></tr>
+  <tr><td>RTL vs. netlist random co-simulation, every output every cycle</td><td><span class="pill p-ok">0 mismatches</span> 20M cycles + 6M with SDF at 3 corners</td><td><code>test/extra/cosim/</code>; 3 planted RTL bugs all caught</td></tr>
 </table>
 <div class="plan">
   <div class="step"><div class="n">1</div><div><h4>Design, verification, layout</h4><ul>
     <li>RTL, tests, PnR and local signoff above</li></ul></div>
     <div class="st"><span class="pill p-ok">done</span></div></div>
   <div class="step"><div class="n">2</div><div><h4>Repository and CI</h4><ul>
-    <li>GitHub repo from the TT template, push, GitHub <code>gds</code> action + precheck green</li></ul></div>
+    <li>Git repo ready; push to GitHub, <code>gds</code> action + precheck green</li></ul></div>
     <div class="st"><span class="pill p-todo">next</span></div></div>
   <div class="step"><div class="n">3</div><div><h4>Submit to TTSKY26d</h4><ul>
     <li>Before 2026-11-30</li></ul></div>
@@ -234,68 +233,7 @@
 </div>
 
 <!-- ============================================================ -->
-<h2 id="check">5. Design check and fixes (2026-10-10)</h2>
-<p>What was run against the first-draft RTL in <code>npu1x1/src/</code> (<code>project.v</code>, <code>npu_array.v</code>, <code>npu_pe.v</code>, <code>dft/clk_gate.v</code>), what it found, and how each finding was fixed for the tapeout.</p>
-
-<h3>Checks run</h3>
-<table>
-  <tr><th>Check</th><th>Configurations</th><th>Result</th></tr>
-  <tr><td>Verilator 5.020 <code>--lint-only -Wall</code></td><td>2×2/12, 2×3/12, 3×2/12, 3×3/12</td>
-      <td><span class="pill p-warn">3 warnings</span> no errors; all cosmetic (see finding 2)</td></tr>
-  <tr><td>RTL smoke test, Icarus 12 (throwaway self-checking bench, <code>runs/check/smoke_tb.v</code>)</td><td>2×2/12, 2×3/12, 3×2/12, 3×3/12, 2×2/16</td>
-      <td><span class="pill p-ok">pass</span> 0 errors in every configuration</td></tr>
-  <tr><td>Flop count vs. area sweep</td><td>all of the above</td>
-      <td><span class="pill p-ok">match</span> scan chain length + 2 reset-sync flops = flop count from synthesis (e.g. 2×2/12: 80 + 2 = 82)</td></tr>
-</table>
-<p>The smoke test covers: ID bytes, reset values, 31 accumulating steps (first one −8·−8 on every PE, the worst case for 12-bit), all four read-back bytes per accumulator, <code>ROWEN</code> (row 0 disabled → <b>0</b> gated-clock edges on row 0 over 5 steps, 5 on the enabled row), auto-step on a <code>B1</code> write, clear, and a random pattern shifted through the full chain and back out of <code>uio[7]</code>; <code>uio[7]</code> = 0 and <code>uio_oe</code> = <code>0x80</code> outside test mode. It has since been replaced by the cocotb suite in <code>test/</code> (§6).</p>
-
-<h3>Findings</h3>
-<table>
-  <tr><th style="width:28px">#</th><th style="width:96px">Severity</th><th>Finding</th><th>Fix (applied)</th></tr>
-  <tr><td>1</td><td><span class="pill p-bad">blocker</span></td>
-      <td><code>info.yaml</code>, <code>src/config.json</code> and <code>src/base.sdc</code> are still the 6×2 parent's copies: wrong top module (<code>tt_um_akln0401_riscv_npu</code>), <code>tiles: 6x2</code>, TinyQV source list, QSPI pinout. <code>base.sdc</code> false-paths <code>ui_in[4:6]</code> — on this chip those are <b>data</b> inputs, the test pins moved to <code>uio[4:6]</code> — and has QSPI output delays on <code>uio_out</code>.</td>
-      <td><span class="pill p-ok">fixed</span> New <code>info.yaml</code> (1×1, <code>tt_um_akln0401_npu</code>, 4 sources, pinout); <code>config.json</code> from the TT template plus the 12 STA corners, parent hold margins, cell exclusions, post-GRT timing and slew repair; <code>base.sdc</code> false-paths <code>uio_in[4:6]</code> and <code>uio_out[7]</code>, host interface at the default 20% IO delay.</td></tr>
-  <tr><td>2</td><td><span class="pill p-todo">cosmetic</span></td>
-      <td>Lint: <code>idx &lt; NPE</code> width mismatch (<code>project.v:169</code>), <code>uio_in[7]</code> and <code>rsel[6]</code> unused.</td>
-      <td><span class="pill p-ok">fixed</span> Both in <code>_unused</code>, compare as 5-bit. Lint clean at 2×2, 2×3, 3×2, 2×4, 4×4; LibreLane lint step clean.</td></tr>
-  <tr><td>3</td><td><span class="pill p-warn">minor</span></td>
-      <td>Row enable is implemented only by the clock gate: each PE gets the global <code>step</code>. In test mode the gates are forced on, so a disabled row still accumulates when stepped. Normal mode is correct (verified: 0 edges).</td>
-      <td><span class="pill p-ok">fixed</span> PEs get <code>step &amp;&amp; row_en[i]</code>. New test (row disabled, test mode on, step) fails on the old RTL and passes on the new one.</td></tr>
-  <tr><td>4</td><td><span class="pill p-todo">document</span></td>
-      <td><code>a_reg</code>/<code>b_reg</code> have no reset: a step before the first A/B write adds X in simulation, random values on silicon.</td>
-      <td><span class="pill p-ok">fixed</span> A/B now reset to 0 (no X in gate-level sim, defined state on silicon); checked by <code>test_reset_and_id</code>.</td></tr>
-  <tr><td>5</td><td><span class="pill p-todo">document</span></td>
-      <td>A <code>CTRL</code> write with both clear and step set: clear wins, the step is lost.</td>
-      <td><span class="pill p-ok">documented</span> In <code>project.v</code>, <code>docs/info.md</code> and §8; checked by <code>test_clear</code>.</td></tr>
-</table>
-<p class="note">Nothing found would have made silicon fail. All five findings are fixed or documented; the interface logic (strobe synchronizer, registered step/clear, ICG enables, scan muxes) behaves as specified at every size tried.</p>
-
-<!-- ============================================================ -->
-<h2 id="plan">6. Plan and status</h2>
-<div class="plan">
-  <div class="step"><div class="n">1</div><div><h4>RTL</h4><ul>
-    <li><code>project.v</code> (pin interface, registers, scan), <code>npu_array.v</code> (rows, ICGs), <code>npu_pe.v</code> and <code>clk_gate.v</code> copied from the parent</li>
-    <li>Lint clean; findings 2–5 applied; final parameters 2×2, ACC_W 16</li></ul></div>
-    <div class="st"><span class="pill p-ok">done</span></div></div>
-  <div class="step"><div class="n">2</div><div><h4>Flow configuration</h4><ul>
-    <li><code>info.yaml</code>: title, top module, <code>tiles: 1x1</code>, <code>clock_hz</code>, sources, pinout</li>
-    <li><code>config.json</code> from the TT 1×1 defaults, keeping the 12 STA corners (incl. ss_n40C_1v60) and the cell exclusions; new <code>base.sdc</code></li></ul></div>
-    <div class="st"><span class="pill p-ok">done</span></div></div>
-  <div class="step"><div class="n">3</div><div><h4>Tests</h4><ul>
-    <li>cocotb + Python reference: ID, reset, random matmuls, auto-step, clear, ROWEN gating, overflow wrap, write-protocol timing</li>
-    <li>Scan chain length and per-bit map (<code>scan_map.py</code>) through the pins; the same tests at gate level</li>
-    <li>8 cocotb tests in <code>test/test.py</code>, pins only; gated-clock edges counted on the ICG outputs in RTL and in the netlist. 2×2/16: RTL 8/8, gate level 8/8 (cocotb 2.1, as in TT CI)</li></ul></div>
-    <div class="st"><span class="pill p-ok">done</span></div></div>
-  <div class="step"><div class="n">4</div><div><h4>PnR sweep in 1×1</h4><ul>
-    <li>2×3/12 does not place (91% after CTS); 2×2/16 and 2×2/12 both close. Chosen: <b>2×2, 16-bit</b> (user decision 2026-10-10); 2×2/12 kept as fallback (precheck 15/15)</li></ul></div>
-    <div class="st"><span class="pill p-ok">done</span></div></div>
-  <div class="step"><div class="n">5</div><div><h4>Signoff and docs</h4><ul>
-    <li>Done: RTL + GL regression, local precheck, <code>docs/info.md</code> datasheet, SDF-annotated GL sim, RTL-vs-netlist random co-sim (§4). Still to do: GitHub repo from the TT template + <code>gds</code> action</li></ul></div>
-    <div class="st"><span class="pill p-run">in progress</span></div></div>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="system">7. System</h2>
+<h2 id="system">5. System</h2>
 <p>The microcontroller writes operand bytes and commands over a small register bus, the chip does all <code>ROWS·COLS</code> multiply-accumulates in one clock, and the host reads accumulators back one byte at a time through <code>RSEL</code>.</p>
 <div class="fig">
 <svg viewBox="0 0 960 360" role="img" aria-label="System block diagram">
@@ -367,7 +305,7 @@
 <p class="cap">Figure 5 — Data path (clay), register bus (grey), scan chain (dashed). <code>uio_oe</code> is fixed at <code>0x80</code>: only <code>uio[7]</code> is an output, driven 0 unless <code>test_mode</code>.</p>
 
 <!-- ============================================================ -->
-<h2 id="regs">8. Register map</h2>
+<h2 id="regs">6. Register map</h2>
 <p>Write-only registers, 3-bit address on <code>uio[2:0]</code>. Operands are signed int4 (−8…7), two per byte.</p>
 <table>
   <tr><th>Addr</th><th>Name</th><th>Bits</th><th>Reset</th></tr>
@@ -383,7 +321,7 @@
 <p>ID bytes: <code>0x4E</code> ('N'), <code>{ROWS, COLS}</code>, <code>ACC_W</code>, <code>0x01</code> (version) — so the host can discover the array size the PnR sweep settles on. Reset clears every accumulator and the A/B operand registers. At 2×2 the ID bytes are <code>4E 22 10 01</code>.</p>
 
 <!-- ============================================================ -->
-<h2 id="protocol">9. Write protocol</h2>
+<h2 id="protocol">7. Write protocol</h2>
 <p>The host's pins are asynchronous to the chip clock. Only the strobe is synchronized (2 flops plus one for edge detect); address and data are sampled directly, which is safe because the host holds them stable while the synchronized edge arrives.</p>
 <div class="fig">
 <svg viewBox="0 0 960 300" role="img" aria-label="Write protocol waveform">
@@ -425,7 +363,7 @@
 <p>At 50&nbsp;MHz one write needs ≥ 120&nbsp;ns on the chip side — far below what host GPIO code takes, so the host's own speed sets throughput, not the chip clock.</p>
 
 <!-- ============================================================ -->
-<h2 id="array">10. MAC array</h2>
+<h2 id="array">8. MAC array</h2>
 <p>One step is an outer product: for every enabled row <code>i</code> and every column <code>j</code>, <code>acc[i][j] += a[i] · b[j]</code>. A matrix product <code>C = A·B</code> with inner dimension <code>K</code> is <code>K</code> steps, each loading one column of <code>A</code> and one row of <code>B</code>.</p>
 <pre><code>// npu_pe.v — one MAC unit, clocked by its row's gated clock
 if (scan_en)    acc &lt;= {acc[ACC_W-2:0], scan_in};
@@ -434,14 +372,14 @@ else if (step)  acc &lt;= acc + sign_extend(a * b);   // int4 × int4 → 8-bit 
 <p><b>Accumulator width: 16 bit.</b> The largest product is −8·−8 = 64. 16-bit accumulators (max 32,767) take 511 worst-case steps, so a whole 64-input dot product (8×8 digit image) fits in one pass; 12-bit would have allowed only 31 (the host would have to split <code>K</code>). Overflow wraps (two's complement).</p>
 
 <!-- ============================================================ -->
-<h2 id="cg">11. Clock gating</h2>
-<p>Each row has one <code>sky130_fd_sc_hd__dlclkp_1</code> integrated clock gate (wrapper <code>src/dft/clk_gate.v</code>, shared with the parent design). The latch is transparent while <code>clk</code> is low, so the enable can't glitch the gated clock.</p>
+<h2 id="cg">9. Clock gating</h2>
+<p>Each row has one <code>sky130_fd_sc_hd__dlclkp_1</code> integrated clock gate (wrapper <code>src/dft/clk_gate.v</code>, the same one as in the larger 6×2 RISC-V + NPU design). The latch is transparent while <code>clk</code> is low, so the enable can't glitch the gated clock.</p>
 <pre>en[i] = (step_q &amp;&amp; !scan_en &amp;&amp; row_en[i]) || clear_q || !rstn    // functional enable
 GATE  = en[i] || test_mode                                     // test mode forces the clock on</pre>
 <p>A row's accumulators and their clock tree toggle only on the cycle after a step or clear. Between steps the host is busy writing operands for dozens of chip clocks, so the array is idle almost all the time — the saving the bench measurement is meant to show. The smoke test confirms it: with row 0 disabled, 5 steps produce 0 edges on row 0's clock and 5 on the enabled row.</p>
 
 <!-- ============================================================ -->
-<h2 id="dft">12. Scan chain</h2>
+<h2 id="dft">10. Scan chain</h2>
 <p>Mux-D scan in RTL. <code>test_mode</code> (<code>uio[4]</code>) forces all row clocks on and puts <code>scan_out</code> on <code>uio[7]</code>; <code>scan_en</code> (<code>uio[5]</code>) is ANDed with <code>test_mode</code>; <code>scan_in</code> is <code>uio[6]</code>. Every flop is on the chain except the two reset-synchronizer flops, which stay off it so reset remains controllable in test mode.</p>
 <div class="fig">
 <svg viewBox="0 0 960 120" role="img" aria-label="Scan chain order">
@@ -478,61 +416,7 @@ GATE  = en[i] || test_mode                                     // test mode forc
 </table>
 
 <!-- ============================================================ -->
-<h2 id="area">13. Area: what fits in one tile</h2>
-<h3>Place-and-route results (LibreLane 3.0.14, 50&nbsp;MHz, 12 corners)</h3>
-<table>
-  <tr><th>Array</th><th class="num">Utilization</th><th class="num">Setup WS</th><th class="num">Hold WS</th><th>DRC / LVS / antenna</th><th class="num">Slew vio.</th><th>Result</th></tr>
-  <tr><td>2×3, acc12</td><td class="num">91% after CTS</td><td class="num">—</td><td class="num">—</td><td>—</td><td class="num">—</td><td><span class="pill p-bad">no fit</span> detailed placement failed</td></tr>
-  <tr><td>2×2, acc12</td><td class="num">72.9%</td><td class="num">+7.17&nbsp;ns</td><td class="num">+0.162&nbsp;ns</td><td>0 / 0 / 0</td><td class="num">4</td><td><span class="pill p-ok">fallback</span> precheck 15/15, RTL + GL 8/8</td></tr>
-  <tr><td><b>2×2, acc16</b></td><td class="num">84.4%</td><td class="num">+5.70&nbsp;ns</td><td class="num">+0.162&nbsp;ns</td><td>0 / 0 / 0</td><td class="num">10</td><td><span class="pill p-ok">tapeout</span> precheck 15/15, RTL + GL 8/8</td></tr>
-</table>
-<p>Slew violations: a few pins at the cold slow corner only (worst 0.84&nbsp;ns at max_ss_n40C for 16-bit, 12% over the flow's 0.75&nbsp;ns limit; 0.77&nbsp;ns for 12-bit) (the cell tables go to 1.5&nbsp;ns) and already included in the timing numbers. The parent 6×2 design shipped with thousands. They sit on the <code>RSEL</code> read-mux select nets, not on a clock or a critical path.</p>
-<h3>Synthesis sweep (before the real runs)</h3>
-<p>Synthesized area of the whole top level (plain yosys + abc, typical-corner library, before PnR; <code>runs/area/sweep.sh</code>), against the 161 × 111.52&nbsp;µm = 17,955&nbsp;µm² die. The light extension is the usual PnR overhead of +30–50% (buffers, clock tree, hold fixing). <b>This sweep is ~35% optimistic:</b> LibreLane's synthesis bans most drive-1 cells (<code>no_synth.cells</code>), so 2×3/12 really synthesizes to 13.5k&nbsp;µm², not 10.0k.</p>
-<div class="fig">
-  <div class="area" id="areaChart"></div>
-  <div class="axis" style="margin-top:8px"><div></div><div class="ticks" id="areaTicks"></div><div></div></div>
-</div>
-<p class="cap">Figure 8 — Dashed line = full die. Grey bars don't fit even before PnR. The sweep suggested 2×3 / 3×2 would fit; the real runs above showed they don't.</p>
-<script>
-  // rows: [label, synthesized area um2, flops]
-  const DIE = 17955, MAX = 150;
-  const rows = [["2×2 acc12", 7373, 82], ["2×2 acc16", 7964, 98], ["2×3 acc12", 10027, 110], ["3×2 acc12", 10184, 111],
-                ["2×4 acc12", 13160, 138], ["4×2 acc12", 13224, 140], ["2×4 acc16", 14565, 170], ["3×3 acc12", 15012, 151],
-                ["3×4 acc12", 19977, 191], ["4×4 acc12", 25000, 244]];
-  const el = document.getElementById("areaChart");
-  const pct = v => Math.min(v, MAX) / MAX * 100;
-  for (const [k, a, ff] of rows) {
-    const s = a / DIE * 100, lo = s * 1.3, hi = s * 1.5, over = s > 100;
-    const tip = `${k}: ${a.toLocaleString()} µm² synthesized, ${ff} flops, ${s.toFixed(0)}% of die; after PnR ≈ ${lo.toFixed(0)}–${hi.toFixed(0)}%`;
-    el.insertAdjacentHTML("beforeend",
-      `<div class="k">${k}</div>
-       <div class="track${over ? " over" : ""}" title="${tip}">
-         ${over ? "" : `<div class="est" style="left:${pct(s)}%;width:${pct(hi) - pct(s)}%"></div>`}
-         <div class="syn" style="width:${pct(s)}%"></div>
-         <div class="die" style="left:${pct(100)}%"></div>
-       </div>
-       <div class="v">${s.toFixed(0)}%${over ? " · too big" : ` → ${lo.toFixed(0)}–${Math.min(hi, 999).toFixed(0)}%`}</div>`);
-  }
-  const t = document.getElementById("areaTicks");
-  for (const v of [0, 25, 50, 75, 100, 125, 150]) t.insertAdjacentHTML("beforeend", `<span style="left:${v / MAX * 100}%">${v}%</span>`);
-</script>
-<table>
-  <tr><th>Array</th><th class="num">Area µm²</th><th class="num">Flops</th><th class="num">% of die (synth)</th></tr>
-  <tr><td>2×2 acc12</td><td class="num">7,373</td><td class="num">82</td><td class="num">41%</td></tr>
-  <tr><td>2×2 acc16</td><td class="num">7,964</td><td class="num">98</td><td class="num">44%</td></tr>
-  <tr><td>2×3 acc12</td><td class="num">10,027</td><td class="num">110</td><td class="num">56%</td></tr>
-  <tr><td>3×2 acc12</td><td class="num">10,184</td><td class="num">111</td><td class="num">57%</td></tr>
-  <tr><td>2×4 acc12</td><td class="num">13,160</td><td class="num">138</td><td class="num">73%</td></tr>
-  <tr><td>4×2 acc12</td><td class="num">13,224</td><td class="num">140</td><td class="num">74%</td></tr>
-  <tr><td>2×4 acc16</td><td class="num">14,565</td><td class="num">170</td><td class="num">81%</td></tr>
-  <tr><td>3×3 acc12</td><td class="num">15,012</td><td class="num">151</td><td class="num">84%</td></tr>
-  <tr><td>3×4 acc12</td><td class="num">19,977</td><td class="num">191</td><td class="num">111%</td></tr>
-  <tr><td>4×4 acc12</td><td class="num">25,000</td><td class="num">244</td><td class="num">139%</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<h2 id="pins">14. Pinout</h2>
+<h2 id="pins">11. Pinout</h2>
 <table>
   <tr><th>Pin</th><th>Dir</th><th>Function</th></tr>
   <tr><td class="mono">ui[7:0]</td><td>in</td><td>Write data byte</td></tr>
@@ -547,7 +431,7 @@ GATE  = en[i] || test_mode                                     // test mode forc
 </table>
 
 <!-- ============================================================ -->
-<h2 id="host">15. Host code</h2>
+<h2 id="host">12. Host code</h2>
 <p>Pseudocode for the demo board's microcontroller; <code>set_pins</code>/<code>read_uo</code> stand in for whatever GPIO API the firmware uses (TT MicroPython SDK or C SDK). Strobe timing is in chip clocks: MicroPython is far slower than 4 chip clocks per pin change, but C code writing the GPIO registers directly can toggle in a few ns, so it needs the explicit waits.</p>
 <pre><code>A0, A1, B0, B1, CTRL, ROWEN, RSEL = range(7)
 
