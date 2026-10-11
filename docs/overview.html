@@ -126,19 +126,9 @@
 <body>
 <main>
 
-<p class="label">Tiny Tapeout · SkyWater SKY130 · TTSKY26d · 1×1 tile</p>
 <h1>A one-tile int4 NPU</h1>
-<p class="sub">A chip for the Tiny Tapeout TTSKY26d shuttle: a stand-alone int4 MAC array with per-row clock gating and full scan, driven from pins by the demo board's microcontroller. Top module <code>tt_um_akln0401_npu</code>.</p>
+<p class="sub">A 2×2 int4 MAC array with 16-bit accumulators, per-row clock gating and full scan, in one Tiny Tapeout tile on SkyWater SKY130 (shuttle TTSKY26d). The demo board's microcontroller drives it over the pins.</p>
 
-<dl class="facts">
-  <div><dt>Why</dt><dd>Budget is one tile. TinyQV alone synthesizes to ~65.6k&nbsp;µm², a 1×1 die is 17,955&nbsp;µm² — no CPU fits. The RP2040/RP2350 on the demo board plays host CPU instead</dd></div>
-  <div><dt>Array</dt><dd><b>2×2</b> int4 outer-product array with <b>16-bit</b> accumulators, <code>acc[i][j] += a[i]·b[j]</code> (RTL is parameterized; 2×3 does not fit in one tile)</dd></div>
-  <div><dt>Interface</dt><dd>Byte-wide register bus on pins: <code>ui[7:0]</code> data in, <code>uo[7:0]</code> data out, <code>uio[2:0]</code> address, <code>uio[3]</code> write strobe</dd></div>
-  <div><dt>Goals kept</dt><dd>AI accelerator, one ICG per row, every functional flop on a scan chain to pins</dd></div>
-  <div><dt>Clock</dt><dd>50&nbsp;MHz (20&nbsp;ns), all 12 corners incl. ss_n40C_1v60 — worst setup +5.70&nbsp;ns, hold +0.162&nbsp;ns</dd></div>
-  <div><dt>Status</dt><dd>Layout final and signed off locally: DRC / LVS / antenna 0, TT precheck 15/15, timing clean at all 12 corners. Verified: RTL and gate-level cocotb 8/8, gate level with SDF delays 8/8 at 4 corners, RTL-vs-netlist random co-simulation 26M cycles with 0 mismatches. Next: GitHub <code>gds</code> action and submission (§4)</dd></div>
-  <div><dt>Deadline</dt><dd>2026-11-30</dd></div>
-</dl>
 
 <nav>
   <a href="#specs">Specs</a><a href="#how">How it works</a><a href="#layout">Layout &amp; 3D</a><a href="#tapeout">Tapeout</a>
@@ -175,13 +165,13 @@
 
 <!-- ============================================================ -->
 <h2 id="how">2. How it works</h2>
-<p>The chip is a small matrix-multiply engine without a CPU. The microcontroller on the Tiny Tapeout demo board acts as the host: it writes operands into the chip over the pins, tells it to step, and reads results back.</p>
+<p>The chip is a small matrix-multiply engine without a CPU. A CPU does not fit in one tile: TinyQV alone synthesizes to ~65.6k&nbsp;µm², 3.6× the 17,955&nbsp;µm² die. The microcontroller on the Tiny Tapeout demo board acts as the host instead: it writes operands into the chip over the pins, tells it to step, and reads the results back.</p>
 <ol class="how">
   <li><b>Write a register.</b> The host puts the address on <code>uio[2:0]</code> and the byte on <code>ui[7:0]</code>, then raises the strobe <code>uio[3]</code>. The strobe is synchronized to the chip clock (2 flops) and its rising edge loads the byte (§7).</li>
   <li><b>Load operands.</b> <code>A0</code> holds two int4 values <code>a[0]</code>, <code>a[1]</code> (one column of A), <code>B0</code> holds <code>b[0]</code>, <code>b[1]</code> (one row of B).</li>
   <li><b>Step.</b> A <code>CTRL</code> step (or, in auto mode, any <code>B1</code> write) opens each enabled row's clock gate for exactly one cycle, and all four PEs add <code>a[i]·b[j]</code> to their accumulator. <code>K</code> steps compute a 2×2 block of <code>C = A·B</code> with inner dimension <code>K</code> (up to 511 without overflow).</li>
   <li><b>Read back.</b> Writing <code>RSEL</code> picks an accumulator and a byte; <code>uo[7:0]</code> then shows that byte. Four reads give the 32-bit sign-extended value.</li>
-  <li><b>Sleep between steps.</b> When nothing is stepping, the row clock gates are closed: the 64 accumulator flops and their clock tree get no clock edges, which is where the power saving comes from (§9).</li>
+  <li><b>Sleep between steps.</b> When nothing is stepping, the row clock gates are closed: the 64 accumulator flops and their clock tree get no clock edges (§9).</li>
   <li><b>Test on silicon.</b> <code>test_mode</code> (<code>uio[4]</code>) forces the clocks on and links all 96 flops into one shift register from <code>uio[6]</code> to <code>uio[7]</code>, so any internal state can be loaded and read out on the bench (§10).</li>
 </ol>
 <p>Block diagram in §5, register map in §6, host code in §12.</p>
@@ -197,7 +187,7 @@
 <h3>Interactive 3D model</h3>
 <p>The same GDS as a 3D model. Each layer is extruded at its height in the SKY130 stack (heights are exaggerated, ×4 by default; use the slider). Click to interact: drag to rotate, right-drag or shift-drag to pan, wheel or pinch to zoom; ⤢ goes full screen. The <b>Metal</b> preset hides the transistor layers, <b>Cells</b> shows only them.</p>
 <div id="gds3d"></div>
-<p class="cap">Figure 3 — 174,710 shapes in 13 layers (diff, tap, poly, licon, li1, mcon, met1, via, met2, via2, met3, via3, met4). Generated from the GDS by <code>tools/render/gen3d.py</code>, drawn with WebGL2 and no external libraries. Without WebGL2 a still image is shown instead.</p>
+<p class="cap">Figure 3 — 174,710 shapes in 13 layers (diff, tap, poly, licon, li1, mcon, met1, via, met2, via2, met3, via3, met4). Generated from the GDS by <code>tools/render/gen3d.py</code> and drawn with WebGL2; browsers without WebGL2 show a still image.</p>
 <div class="shot dark"><img data-asset="close3d" alt="3D close-up of the routing layers" width="1400" height="900"></div>
 <p class="cap">Figure 4 — Close-up: met4 power stripes (orange) on top, met3 (green) straps and signals, met2 (red) and met1 (blue) routing below, with the via stacks (grey) between them.</p>
 
@@ -222,11 +212,11 @@
     <li>RTL, tests, PnR and local signoff above</li></ul></div>
     <div class="st"><span class="pill p-ok">done</span></div></div>
   <div class="step"><div class="n">2</div><div><h4>Repository and CI</h4><ul>
-    <li>Git repo ready; push to GitHub, <code>gds</code> action + precheck green</li></ul></div>
-    <div class="st"><span class="pill p-todo">next</span></div></div>
+    <li>Public GitHub repo; Tiny Tapeout <code>gds</code> build, precheck and gate-level test pass in CI</li></ul></div>
+    <div class="st"><span class="pill p-ok">done</span></div></div>
   <div class="step"><div class="n">3</div><div><h4>Submit to TTSKY26d</h4><ul>
     <li>Before 2026-11-30</li></ul></div>
-    <div class="st"><span class="pill p-todo">to do</span></div></div>
+    <div class="st"><span class="pill p-todo">next</span></div></div>
   <div class="step"><div class="n">4</div><div><h4>Bring-up on silicon</h4><ul>
     <li>ID bytes <code>4E 22 10 01</code>, scan chain shift, matmuls against a Python reference, clock-gating current with rows on/off</li></ul></div>
     <div class="st"><span class="pill p-todo">after fab</span></div></div>
@@ -234,7 +224,7 @@
 
 <!-- ============================================================ -->
 <h2 id="system">5. System</h2>
-<p>The microcontroller writes operand bytes and commands over a small register bus, the chip does all <code>ROWS·COLS</code> multiply-accumulates in one clock, and the host reads accumulators back one byte at a time through <code>RSEL</code>.</p>
+<p>The microcontroller writes operand bytes and commands over a small register bus, the chip does all four multiply-accumulates in one clock, and the host reads accumulators back one byte at a time through <code>RSEL</code>.</p>
 <div class="fig">
 <svg viewBox="0 0 960 360" role="img" aria-label="System block diagram">
   <defs>
@@ -243,10 +233,10 @@
     <marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrow-dft"/></marker>
   </defs>
   <!-- host -->
-  <rect class="cpu" x="16" y="60" width="150" height="230" rx="4"/>
-  <text x="91" y="160" text-anchor="middle" font-weight="600">Host MCU</text>
-  <text x="91" y="180" text-anchor="middle" font-size="12" class="t-muted">RP2040 / RP2350</text>
-  <text x="91" y="196" text-anchor="middle" font-size="12" class="t-muted">on the demo board</text>
+  <rect class="cpu" x="16" y="60" width="150" height="280" rx="4"/>
+  <text x="91" y="184" text-anchor="middle" font-weight="600">Host MCU</text>
+  <text x="91" y="204" text-anchor="middle" font-size="12" class="t-muted">RP2040 / RP2350</text>
+  <text x="91" y="220" text-anchor="middle" font-size="12" class="t-muted">on the demo board</text>
   <!-- chip outline -->
   <rect x="250" y="20" width="694" height="320" rx="4" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/>
   <text x="262" y="40" font-size="12" class="t-muted mono">tt_um_akln0401_npu · 1×1 tile</text>
@@ -260,7 +250,6 @@
   <path class="wire" d="M166,170 H300" marker-end="url(#ah)"/>
   <path class="wire-dft" d="M166,230 H300" marker-end="url(#ahd)"/>
   <path class="wire" d="M610,290 H166" marker-end="url(#ah)"/>
-  <path class="wire-dft" d="M900,324 H166" marker-end="url(#ahd)"/>
   <!-- interface -->
   <rect class="peri" x="300" y="60" width="200" height="190" rx="4"/>
   <text x="400" y="84" text-anchor="middle" font-weight="600">Pin interface</text>
@@ -271,38 +260,37 @@
     <text x="316" y="176">ROWEN mask, RSEL</text>
     <text x="316" y="198">step_q / clear_q (registered)</text>
   </g>
-  <rect class="dft" x="316" y="214" width="168" height="26" rx="3"/>
-  <text x="400" y="232" text-anchor="middle" font-size="12">test_mode · scan_en · scan_in</text>
+  <rect class="dft" x="310" y="214" width="180" height="26" rx="3"/>
+  <text x="400" y="231" text-anchor="middle" font-size="11.5">test_mode · scan_en · scan_in</text>
   <!-- array -->
   <rect class="npu" x="560" y="60" width="340" height="190" rx="4"/>
-  <text x="730" y="84" text-anchor="middle" font-weight="600">MAC array (ROWS × COLS)</text>
+  <text x="730" y="84" text-anchor="middle" font-weight="600">MAC array (2 × 2)</text>
+  <path class="wire" d="M638,115 H772 M638,161 H772"/>
   <g font-size="11.5">
-    <rect class="dft" x="576" y="100" width="44" height="30" rx="3"/><text x="598" y="119" text-anchor="middle">ICG</text>
-    <rect class="box" x="634" y="100" width="76" height="30" rx="3"/><text x="672" y="119" text-anchor="middle">PE 0,0</text>
-    <rect class="box" x="720" y="100" width="76" height="30" rx="3"/><text x="758" y="119" text-anchor="middle">PE 0,1</text>
-    <text x="820" y="119" class="t-muted">…</text>
-    <rect class="dft" x="576" y="146" width="44" height="30" rx="3"/><text x="598" y="165" text-anchor="middle">ICG</text>
-    <rect class="box" x="634" y="146" width="76" height="30" rx="3"/><text x="672" y="165" text-anchor="middle">PE 1,0</text>
-    <rect class="box" x="720" y="146" width="76" height="30" rx="3"/><text x="758" y="165" text-anchor="middle">PE 1,1</text>
-    <text x="820" y="165" class="t-muted">…</text>
-    <text x="598" y="200" text-anchor="middle" class="t-muted">⋮</text><text x="715" y="200" text-anchor="middle" class="t-muted">⋮</text>
-    <text x="730" y="236" text-anchor="middle" class="t-muted">one gated clock per row · int4 × int4 → ACC_W-bit acc</text>
+    <rect class="dft" x="592" y="100" width="46" height="30" rx="3"/><text x="615" y="119" text-anchor="middle">ICG</text>
+    <rect class="box" x="652" y="100" width="108" height="30" rx="3"/><text x="706" y="119" text-anchor="middle">PE 0,0</text>
+    <rect class="box" x="772" y="100" width="108" height="30" rx="3"/><text x="826" y="119" text-anchor="middle">PE 0,1</text>
+    <rect class="dft" x="592" y="146" width="46" height="30" rx="3"/><text x="615" y="165" text-anchor="middle">ICG</text>
+    <rect class="box" x="652" y="146" width="108" height="30" rx="3"/><text x="706" y="165" text-anchor="middle">PE 1,0</text>
+    <rect class="box" x="772" y="146" width="108" height="30" rx="3"/><text x="826" y="165" text-anchor="middle">PE 1,1</text>
+    <text x="740" y="236" text-anchor="middle" class="t-muted">one gated clock per row · int4 × int4 → 16-bit accumulator</text>
   </g>
-  <path class="wire-npu" d="M500,120 H560" marker-end="url(#ahn)"/>
-  <text x="530" y="112" text-anchor="middle" font-size="11" class="t-muted">a, b</text>
-  <path class="wire-npu" d="M500,160 H560" marker-end="url(#ahn)"/>
-  <text x="530" y="152" text-anchor="middle" font-size="11" class="t-muted">step</text>
+  <path class="wire-npu" d="M500,138 H572 V115 H592" marker-end="url(#ahn)"/>
+  <path class="wire-npu" d="M572,138 V161 H592" marker-end="url(#ahn)"/>
+  <text x="530" y="130" text-anchor="middle" font-size="11" class="t-muted">step</text>
+  <path class="wire-npu" d="M500,200 H560" marker-end="url(#ahn)"/>
+  <text x="530" y="192" text-anchor="middle" font-size="11" class="t-muted">a, b</text>
   <!-- read mux -->
   <rect class="peri" x="610" y="272" width="180" height="36" rx="4"/>
   <text x="700" y="295" text-anchor="middle" font-size="12.5">read mux (RSEL) → byte</text>
   <path class="wire-npu" d="M730,250 V272" marker-end="url(#ahn)"/>
   <!-- scan -->
-  <path class="wire-dft" d="M400,250 V262 H540 V200 H560"/>
-  <path class="wire-dft" d="M900,200 H920 V324 H900"/>
-  <text x="926" y="270" font-size="11" class="t-muted" transform="rotate(90 926 270)">scan_out</text>
+  <path class="wire-dft" d="M400,250 V262 H545 V226 H560" marker-end="url(#ahd)"/>
+  <path class="wire-dft" d="M900,226 H920 V324 H166" marker-end="url(#ahd)"/>
+  <text x="928" y="246" font-size="11" class="t-muted" transform="rotate(90 928 246)">scan_out</text>
 </svg>
 </div>
-<p class="cap">Figure 5 — Data path (clay), register bus (grey), scan chain (dashed). <code>uio_oe</code> is fixed at <code>0x80</code>: only <code>uio[7]</code> is an output, driven 0 unless <code>test_mode</code>.</p>
+<p class="cap">Figure 5 — Data path (orange), register bus (grey), scan chain (dashed). <code>uio_oe</code> is fixed at <code>0x80</code>: only <code>uio[7]</code> is an output, driven 0 unless <code>test_mode</code>.</p>
 
 <!-- ============================================================ -->
 <h2 id="regs">6. Register map</h2>
@@ -310,15 +298,15 @@
 <table>
   <tr><th>Addr</th><th>Name</th><th>Bits</th><th>Reset</th></tr>
   <tr><td class="mono">0</td><td>A0</td><td><code>a[0]</code> = [3:0], <code>a[1]</code> = [7:4]</td><td>0</td></tr>
-  <tr><td class="mono">1</td><td>A1</td><td><code>a[2]</code> = [3:0], <code>a[3]</code> = [7:4] (only rows that exist; unused at 2×2)</td><td>0</td></tr>
+  <tr><td class="mono">1</td><td>A1</td><td>unused (rows 2–3 do not exist in the 2×2 array)</td><td>0</td></tr>
   <tr><td class="mono">2</td><td>B0</td><td><code>b[0]</code> = [3:0], <code>b[1]</code> = [7:4]</td><td>0</td></tr>
-  <tr><td class="mono">3</td><td>B1</td><td><code>b[2]</code> = [3:0], <code>b[3]</code> = [7:4] (unused at 2×2); also steps if <code>CTRL.auto</code> is set</td><td>0</td></tr>
+  <tr><td class="mono">3</td><td>B1</td><td>data unused (2×2 array); the write steps the array if <code>CTRL.auto</code> is set</td><td>0</td></tr>
   <tr><td class="mono">4</td><td>CTRL</td><td>[0] clear all accumulators · [1] step · [2] auto (sticky). Clear beats step in the same write</td><td>auto = 0</td></tr>
-  <tr><td class="mono">5</td><td>ROWEN</td><td>[ROWS−1:0] row enable; a disabled row's clock stops</td><td>all 1</td></tr>
-  <tr><td class="mono">6</td><td>RSEL</td><td>[7] = 0: <code>uo</code> = byte [5:4] of <code>acc[[3:0]]</code> (index <code>COLS·i + j</code>, sign-extended to 32 bit) · [7] = 1: <code>uo</code> = ID byte [1:0]</td><td>0x00</td></tr>
+  <tr><td class="mono">5</td><td>ROWEN</td><td>[1:0] row enable; a disabled row's clock stops</td><td>all 1</td></tr>
+  <tr><td class="mono">6</td><td>RSEL</td><td>[7] = 0: <code>uo</code> = byte [5:4] of accumulator [3:0] (index <code>2·i + j</code>, sign-extended to 32 bit) · [7] = 1: <code>uo</code> = ID byte [1:0]</td><td>0x00</td></tr>
   <tr><td class="mono">7</td><td>—</td><td>reserved</td><td></td></tr>
 </table>
-<p>ID bytes: <code>0x4E</code> ('N'), <code>{ROWS, COLS}</code>, <code>ACC_W</code>, <code>0x01</code> (version) — so the host can discover the array size the PnR sweep settles on. Reset clears every accumulator and the A/B operand registers. At 2×2 the ID bytes are <code>4E 22 10 01</code>.</p>
+<p>ID bytes: <code>4E 22 10 01</code> = 'N', 2×2 array, 16-bit accumulators, version 1. Reset clears every accumulator and the A/B operand registers.</p>
 
 <!-- ============================================================ -->
 <h2 id="protocol">7. Write protocol</h2>
@@ -351,12 +339,13 @@
   <text x="220" y="246" text-anchor="middle" font-size="12" class="t-muted">old</text>
   <text x="580" y="246" text-anchor="middle" font-size="12" class="mono">new</text>
   <!-- annotations -->
-  <path class="wire" d="M150,118 H390" marker-start="url(#ah)" marker-end="url(#ah)"/>
-  <text x="270" y="114" text-anchor="middle" font-size="11" class="t-muted">hold ≥ 4 clk</text>
-  <path class="wire" d="M390,168 H500" marker-start="url(#ah)" marker-end="url(#ah)"/>
-  <text x="445" y="180" text-anchor="middle" font-size="11" class="t-muted">low ≥ 2 clk</text>
-  <text x="520" y="285" font-size="12" class="t-muted">next write may start here →</text>
-  <path class="wire" d="M500,262 V275"/>
+  <path class="wire" d="M150,120 H390" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="270" y="116" text-anchor="middle" font-size="11" class="t-muted">hold ≥ 4 clk</text>
+  <path class="wire" d="M390,168 H510" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="450" y="182" text-anchor="middle" font-size="11" class="t-muted">low ≥ 2 clk</text>
+  <path class="wire" d="M510,160 V282"/>
+  <path class="wire" d="M600,278 H514" marker-end="url(#ah)"/>
+  <text x="608" y="282" font-size="12" class="t-muted">next write may start</text>
 </svg>
 </div>
 <p class="cap">Figure 6 — The synchronized edge fires <code>wr</code> 1–2 clocks after the strobe rises; the register takes the new value on the next edge, 2–3 clocks after the rise. A step or clear requested by that write acts one clock later still, so an auto-step on <code>B1</code> sees the new B byte.</p>
@@ -373,47 +362,53 @@ else if (step)  acc &lt;= acc + sign_extend(a * b);   // int4 × int4 → 8-bit 
 
 <!-- ============================================================ -->
 <h2 id="cg">9. Clock gating</h2>
-<p>Each row has one <code>sky130_fd_sc_hd__dlclkp_1</code> integrated clock gate (wrapper <code>src/dft/clk_gate.v</code>, the same one as in the larger 6×2 RISC-V + NPU design). The latch is transparent while <code>clk</code> is low, so the enable can't glitch the gated clock.</p>
+<p>Each row has one <code>sky130_fd_sc_hd__dlclkp_1</code> integrated clock gate (wrapper <code>src/dft/clk_gate.v</code>). The latch is transparent while <code>clk</code> is low, so the enable can't glitch the gated clock.</p>
 <pre>en[i] = (step_q &amp;&amp; !scan_en &amp;&amp; row_en[i]) || clear_q || !rstn    // functional enable
 GATE  = en[i] || test_mode                                     // test mode forces the clock on</pre>
-<p>A row's accumulators and their clock tree toggle only on the cycle after a step or clear. Between steps the host is busy writing operands for dozens of chip clocks, so the array is idle almost all the time — the saving the bench measurement is meant to show. The smoke test confirms it: with row 0 disabled, 5 steps produce 0 edges on row 0's clock and 5 on the enabled row.</p>
+<p>A row's accumulators and their clock tree toggle only on the cycle after a step or clear. Between steps the host is busy writing operands for dozens of chip clocks, so the array is idle almost all the time. The cocotb test counts the edges of each row's gated clock: for every <code>ROWEN</code> mask, 3 steps give 3 edges on an enabled row and 0 on a disabled one, and test mode keeps both clocks running.</p>
 
 <!-- ============================================================ -->
 <h2 id="dft">10. Scan chain</h2>
 <p>Mux-D scan in RTL. <code>test_mode</code> (<code>uio[4]</code>) forces all row clocks on and puts <code>scan_out</code> on <code>uio[7]</code>; <code>scan_en</code> (<code>uio[5]</code>) is ANDed with <code>test_mode</code>; <code>scan_in</code> is <code>uio[6]</code>. Every flop is on the chain except the two reset-synchronizer flops, which stay off it so reset remains controllable in test mode.</p>
 <div class="fig">
 <svg viewBox="0 0 960 120" role="img" aria-label="Scan chain order">
-  <defs><marker id="ahd2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="arrow-dft"/></marker></defs>
+  <defs><marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="arrow-dft"/></marker></defs>
   <g font-size="11.5" text-anchor="middle">
-    <text x="30" y="56" class="mono">uio[6]</text>
-    <rect class="peri" x="64" y="36" width="70" height="30" rx="3"/><text x="99" y="55">wr_sync 3</text>
-    <rect class="peri" x="144" y="36" width="70" height="30" rx="3"/><text x="179" y="55">a_reg 4R</text>
-    <rect class="peri" x="224" y="36" width="70" height="30" rx="3"/><text x="259" y="55">b_reg 4C</text>
-    <rect class="peri" x="304" y="36" width="50" height="30" rx="3"/><text x="329" y="55">auto 1</text>
-    <rect class="peri" x="364" y="36" width="64" height="30" rx="3"/><text x="396" y="55">row_en R</text>
-    <rect class="peri" x="438" y="36" width="58" height="30" rx="3"/><text x="467" y="55">rsel 8</text>
-    <rect class="peri" x="506" y="36" width="80" height="30" rx="3"/><text x="546" y="55">step, clear 2</text>
-    <rect class="npu" x="596" y="36" width="90" height="30" rx="3"/><text x="641" y="55">PE 0,0 acc</text>
-    <rect class="npu" x="696" y="36" width="90" height="30" rx="3"/><text x="741" y="55">PE 0,1 acc</text>
-    <text x="806" y="55" class="t-muted">…</text>
-    <rect class="npu" x="822" y="36" width="76" height="30" rx="3"/><text x="860" y="55">PE R−1,C−1</text>
-    <text x="930" y="56" class="mono">uio[7]</text>
+    <text x="30" y="54" class="mono">uio[6]</text>
+    <rect class="peri" x="72" y="30" width="58" height="40" rx="3"/><text x="101" y="47">wr_sync</text><text x="101" y="62" class="t-muted">3</text>
+    <rect class="peri" x="141" y="30" width="58" height="40" rx="3"/><text x="170" y="47">a_reg</text><text x="170" y="62" class="t-muted">8</text>
+    <rect class="peri" x="210" y="30" width="58" height="40" rx="3"/><text x="239" y="47">b_reg</text><text x="239" y="62" class="t-muted">8</text>
+    <rect class="peri" x="279" y="30" width="58" height="40" rx="3"/><text x="308" y="47">auto</text><text x="308" y="62" class="t-muted">1</text>
+    <rect class="peri" x="348" y="30" width="58" height="40" rx="3"/><text x="377" y="47">row_en</text><text x="377" y="62" class="t-muted">2</text>
+    <rect class="peri" x="417" y="30" width="58" height="40" rx="3"/><text x="446" y="47">rsel</text><text x="446" y="62" class="t-muted">8</text>
+    <rect class="peri" x="486" y="30" width="70" height="40" rx="3"/><text x="521" y="47">step, clear</text><text x="521" y="62" class="t-muted">2</text>
+    <rect class="npu" x="567" y="30" width="68" height="40" rx="3"/><text x="601" y="47">PE 0,0</text><text x="601" y="62" class="t-muted">16</text>
+    <rect class="npu" x="646" y="30" width="68" height="40" rx="3"/><text x="680" y="47">PE 0,1</text><text x="680" y="62" class="t-muted">16</text>
+    <rect class="npu" x="725" y="30" width="68" height="40" rx="3"/><text x="759" y="47">PE 1,0</text><text x="759" y="62" class="t-muted">16</text>
+    <rect class="npu" x="804" y="30" width="68" height="40" rx="3"/><text x="838" y="47">PE 1,1</text><text x="838" y="62" class="t-muted">16</text>
+    <text x="916" y="54" class="mono">uio[7]</text>
   </g>
-  <path class="wire-dft" d="M50,51 H64" marker-end="url(#ahd2)"/>
-  <path class="wire-dft" d="M898,51 H906" marker-end="url(#ahd2)"/>
-  <text x="480" y="98" text-anchor="middle" font-size="12" class="t-muted">interface vector shifts LSB-first · array row-major, each accumulator enters at its LSB and leaves from its MSB</text>
+  <path class="wire-dft" d="M54,50 H72" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M130,50 H141" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M199,50 H210" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M268,50 H279" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M337,50 H348" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M406,50 H417" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M475,50 H486" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M556,50 H567" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M635,50 H646" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M714,50 H725" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M793,50 H804" marker-end="url(#ahs)"/>
+  <path class="wire-dft" d="M872,50 H890" marker-end="url(#ahs)"/>
+  <path class="grid" fill="none" d="M72,78 V86 H556 V78 M567,78 V86 H872 V78"/>
+  <g font-size="12" text-anchor="middle" class="t-muted">
+    <text x="314" y="104">pin interface · 32 flops</text>
+    <text x="719.5" y="104">MAC array, row-major · 64 flops</text>
+  </g>
 </svg>
 </div>
-<p class="cap">Figure 7 — Chain order from <code>scan_in</code> to <code>scan_out</code>.</p>
-<pre>length = 3 + 4·ROWS + 4·COLS + 1 + ROWS + 8 + 2 + ROWS·COLS·ACC_W</pre>
-<table>
-  <tr><th>Array</th><th class="num">Interface flops</th><th class="num">Array flops</th><th class="num">Chain length</th><th>Shift test (RTL)</th></tr>
-  <tr><td>2×2, acc12</td><td class="num">32</td><td class="num">48</td><td class="num">80</td><td><span class="pill p-ok">pass</span></td></tr>
-  <tr><td><b>2×2, acc16 (tapeout)</b></td><td class="num">32</td><td class="num">64</td><td class="num"><b>96</b></td><td><span class="pill p-ok">pass</span> RTL + gate level (cocotb)</td></tr>
-  <tr><td>2×3, acc12</td><td class="num">36</td><td class="num">72</td><td class="num">108</td><td><span class="pill p-ok">pass</span></td></tr>
-  <tr><td>3×2, acc12</td><td class="num">37</td><td class="num">72</td><td class="num">109</td><td><span class="pill p-ok">pass</span></td></tr>
-  <tr><td>3×3, acc12</td><td class="num">41</td><td class="num">108</td><td class="num">149</td><td><span class="pill p-ok">pass</span></td></tr>
-</table>
+<p class="cap">Figure 7 — Chain order from <code>scan_in</code> to <code>scan_out</code>, with the flop count of each field. Every field shifts in LSB first.</p>
+<p>Length = 3 + 8 + 8 + 1 + 2 + 8 + 2 + 4 × 16 = <b>96</b> flops. The shift test runs through the pins in RTL and on the gate-level netlist; the per-bit map is generated by <code>test/scan_map.py</code>.</p>
 
 <!-- ============================================================ -->
 <h2 id="pins">11. Pinout</h2>
