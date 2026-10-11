@@ -1,0 +1,4 @@
+176c176
+<         m = re.search(r"dlclkp_\d+\s+" + re.escape("x_" + re.sub(r"[.\[\]]", "_", icg)) + r"\s*\((.*?)\);", f.read(), re.S)  # runs/sdf: renamed
+---
+>         m = re.search(r"dlclkp_\d+\s+\\" + re.escape(icg) + r"\s*\((.*?)\);", f.read(), re.S)

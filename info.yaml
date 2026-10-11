@@ -1,0 +1,59 @@
+# Tiny Tapeout project information
+project:
+  title:        "int4 NPU (MAC array, clock gating, scan DFT)"      # Project title
+  author:       "AKLN0401"      # Your name
+  discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
+  description:  "int4 outer-product MAC array with per-row clock gating and full scan, driven by a host MCU over pins"      # One line description of what your project does
+  language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
+  clock_hz:     50000000       # Clock frequency in Hz (or 0 if not applicable)
+
+  # How many tiles your design occupies? A single tile is about 167x108 uM.
+  tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
+
+  # Your top module name must start with "tt_um_". Make it unique by including your github username:
+  top_module:  "tt_um_akln0401_npu"
+
+  # List your project's source files here.
+  # Source files must be in ./src and you must list each source file separately, one per line.
+  # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
+  source_files:
+    - "project.v"
+    - "npu_array.v"
+    - "npu_pe.v"
+    - "dft/clk_gate.v"
+
+# The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
+# This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
+pinout:
+  # Inputs
+  ui[0]: "Data in 0"
+  ui[1]: "Data in 1"
+  ui[2]: "Data in 2"
+  ui[3]: "Data in 3"
+  ui[4]: "Data in 4"
+  ui[5]: "Data in 5"
+  ui[6]: "Data in 6"
+  ui[7]: "Data in 7"
+
+  # Outputs
+  uo[0]: "Data out 0"
+  uo[1]: "Data out 1"
+  uo[2]: "Data out 2"
+  uo[3]: "Data out 3"
+  uo[4]: "Data out 4"
+  uo[5]: "Data out 5"
+  uo[6]: "Data out 6"
+  uo[7]: "Data out 7"
+
+  # Bidirectional pins
+  uio[0]: "Address 0 (in)"
+  uio[1]: "Address 1 (in)"
+  uio[2]: "Address 2 (in)"
+  uio[3]: "Write strobe (in)"
+  uio[4]: "Test mode (in)"
+  uio[5]: "Scan enable (in)"
+  uio[6]: "Scan in (in)"
+  uio[7]: "Scan out (out)"
+
+# Do not change!
+yaml_version: 6

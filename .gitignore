@@ -1,0 +1,31 @@
+.DS_Store
+.idea
+*.vcd
+*.fst
+*.fst.hier
+runs
+tt_submission
+src/user_config.json
+src/config_merged.json
+test/sim_build
+test/__pycache__/
+test/results.xml
+test/gate_level_netlist.v
+tools/requirements.txt
+tt/
+tools/.venv/
+runs/
+test/*results.xml
+macros/*/runs/
+macros/*/harden.log
+tools/.precheck-py/
+tt/precheck/reports/
+tools/.cocotb2/
+# symlinks into the parent checkout (local tools only)
+/tt
+tools/.venv
+tools/.precheck-py
+__pycache__/
+
+# local decision log (not published)
+MEMORY.md
