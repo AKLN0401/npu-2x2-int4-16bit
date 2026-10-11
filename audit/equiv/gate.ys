@@ -1,0 +1,10 @@
+# Post-PnR netlist -> flattened RTLIL with liberty functional models; ICG blackboxed
+read_liberty -ignore_miss_func -ignore_miss_dir -ignore_buses /pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog -overwrite icg_bb.v
+read_verilog /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v
+hierarchy -top tt_um_akln0401_npu
+flatten
+opt_clean
+rename tt_um_akln0401_npu gate
+select gate
+write_rtlil -selected gate_raw.il

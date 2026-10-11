@@ -1,0 +1,11 @@
+# Step 1: RTL -> flattened, bit-split RTLIL (synthesis view of clk_gate: ICG cell, blackboxed)
+read_verilog icg_bb.v
+read_verilog -sv /work/src/project.v /work/src/npu_array.v /work/src/npu_pe.v /work/src/dft/clk_gate.v
+hierarchy -top tt_um_akln0401_npu
+proc
+flatten
+opt_clean
+splitnets
+opt_clean
+rename tt_um_akln0401_npu gold
+write_rtlil gold_raw.il

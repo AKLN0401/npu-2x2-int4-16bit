@@ -1,0 +1,20 @@
+[tasks]
+prove
+mutant
+
+[options]
+mode prove
+
+[engines]
+abc pdr
+
+[script]
+prove: read -formal npu_pe.v
+mutant: read -formal npu_pe_mut.v
+read -formal pe_props.sv
+prep -top pe_props
+
+[files]
+mutant: npu_pe_mut.v
+../../src/npu_pe.v
+pe_props.sv

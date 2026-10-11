@@ -1,0 +1,107 @@
+name: 'Tiny Tapeout Precheck'
+description: 'This action runs DRC checks on the user projects prior to submission'
+branding:
+  color: purple
+  icon: eye
+
+inputs:
+  tools-repo:
+    description: 'Override tt-support-tools repository'
+    default: 'TinyTapeout/tt-support-tools'
+    required: false
+    type: string
+  tools-ref:
+    description: 'Override tt-support-tools branch/tag/commit'
+    default: 'main'
+    required: false
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout tt-support-tools repo
+      uses: actions/checkout@v6
+      with:
+        repository: '${{ inputs.tools-repo }}'
+        path: tt
+        ref: '${{ inputs.tools-ref }}'
+
+    - name: Download GDS artifact
+      uses: actions/download-artifact@v7
+      with:
+        name: tt_submission
+
+    - name: Set up environment variables
+      working-directory: tt_submission
+      shell: bash
+      run: |
+        # Defaults
+        PDK=$(jq -r '.PDK' pdk.json)
+        PDK_ROOT=/home/runner/pdk
+
+        if [ "$PDK" == "gf180mcuD" ]; then
+          PDK_VERSION="e8daeda73ca8f5814dbc0b11d1d05802251a3750"
+        elif [ "$PDK" == "ihp-sg13g2" ]; then
+          PDK_VERSION="c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c"
+        elif [ "$PDK" == "sky130A" ]; then
+          PDK_VERSION="0536d02d875c8f67dd7cca3902ac457e62f20005"
+        fi
+
+        cat << __EOF >> $GITHUB_ENV
+        PDK=$PDK
+        PDK_ROOT=$PDK_ROOT
+        PDK_VERSION=$PDK_VERSION
+        __EOF
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: tt/precheck
+      run: pip install -r requirements.txt
+
+    - name: Install ${{ env.PDK }} PDK
+      uses: TinyTapeout/ciel-action@v1
+      with:
+        pdk_name: ${{ env.PDK }}
+        pdk_version: ${{ env.PDK_VERSION }}
+        pdk_root: ${{ env.PDK_ROOT }}
+
+    - name: Install Nix
+      uses: rikhuijzer/cache-install@c46c673b14b0780c6749d7a45f26ebc07c8c7388 # master + PR #27 (actions/cache v5, Node.js 24); switch back to a tag once a release includes it
+      with:
+        key: nix-${{ hashFiles('precheck/default.nix') }}
+        nix_file: 'tt/precheck/default.nix'
+
+    - name: Build Nix packages
+      shell: bash
+      working-directory: tt/precheck
+      run: nix-build
+
+    - name: Run precheck
+      shell: bash
+      working-directory: tt/precheck
+      run: nix-shell --run "python precheck.py --gds ${{ github.workspace }}/tt_submission/*.gds* --tech ${{ env.PDK }}"
+
+    - name: Test Summary
+      uses: test-summary/action@v2.6
+      with:
+        paths: 'tt/precheck/reports/results.xml'
+      if: always()
+
+    - name: Capture test results
+      shell: bash
+      working-directory: tt/precheck
+      if: always()
+      run: cat reports/results.md >> $GITHUB_STEP_SUMMARY
+
+    - name: Upload reports
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: precheck_reports
+        path: tt/precheck/reports

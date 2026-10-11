@@ -1,0 +1,58 @@
+OpenSTA 2.7.0 GITDIR-NOT Copyright (c) 2025, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+===== corner tt_025C (spef nom)
+Warning: /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v line 1378, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_111.
+Warning: /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v line 1381, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_119.
+Warning: /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v line 2300, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_TAPCELL_ROW_0_78.
+--- row 0 ICG GATE setup
+max_delay/setup group clk
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+i_array.g_row[0].i_cg.icg/GATE (sky130_fd_sc_hd__dlclkp_1)   20.00    3.01   17.00 (MET)
+
+--- row 0 ICG GATE hold
+min_delay/hold group clk
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+i_array.g_row[0].i_cg.icg/GATE (sky130_fd_sc_hd__dlclkp_1)    0.62    2.14    1.52 (MET)
+
+--- row 1 ICG GATE setup
+max_delay/setup group clk
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+i_array.g_row[1].i_cg.icg/GATE (sky130_fd_sc_hd__dlclkp_1)   20.00    2.86   17.14 (MET)
+
+--- row 1 ICG GATE hold
+min_delay/hold group clk
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+i_array.g_row[1].i_cg.icg/GATE (sky130_fd_sc_hd__dlclkp_1)    0.62    1.86    1.24 (MET)
+
+--- async reset recovery/removal
+min_delay/hold group asynchronous
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+_1884_/RESET_B (sky130_fd_sc_hd__dfrtp_2)    1.31    2.16    0.86 (MET)
+
+max_delay/setup group asynchronous
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+_1885_/RESET_B (sky130_fd_sc_hd__dfrtp_2)   20.61    2.23   18.38 (MET)
+
+--- unconstrained endpoints

@@ -1,0 +1,236 @@
+{
+ "run": "20261011-105948",
+ "project_head": "ce832bbafac3472bc7360173b35ae52156fc60fa",
+ "checks": [
+  {
+   "id": "A1_git_baseline",
+   "status": "INFO",
+   "mandatory": false,
+   "evidence": "HEAD ce832bbafac3472bc7360173b35ae52156fc60fa, 0 uncommitted paths, branch main"
+  },
+  {
+   "id": "A2_final_netlist",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "d6f17c20d5446035\u2026 runs/wokwi/final/pnl"
+  },
+  {
+   "id": "B1_verilator_lint",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "verilator -Wall: 0 warnings"
+  },
+  {
+   "id": "B2_existing_rtl_seed1",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "test/test.py 8/8"
+  },
+  {
+   "id": "B2_existing_rtl_seed2",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "test/test.py 8/8"
+  },
+  {
+   "id": "B2_existing_gl_seed1",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "test/test.py 8/8"
+  },
+  {
+   "id": "B3_audit_gl_seed1",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "audit_arith.py 9/9"
+  },
+  {
+   "id": "B3_audit_gl_seed2",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "audit_arith.py 9/9"
+  },
+  {
+   "id": "B3_audit_rtl_seed1",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "audit_arith.py 9/9"
+  },
+  {
+   "id": "B3_audit_rtl_seed2",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "audit_arith.py 9/9"
+  },
+  {
+   "id": "B3_audit_rtl_seed3",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "audit_arith.py 9/9"
+  },
+  {
+   "id": "B4_mutation_check",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "6/6 RTL mutants killed"
+  },
+  {
+   "id": "B5_formal_pe_prove",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "abc pdr: npu_pe next state, all acc states x 256 operand pairs"
+  },
+  {
+   "id": "B5_formal_pe_nonvacuity",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "zero-extension mutant fails the proof"
+  },
+  {
+   "id": "B6_equiv_step",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "yosys sat induction (step), 98 state bits + outputs + ICG GATE"
+  },
+  {
+   "id": "B6_equiv_base",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "yosys sat induction (base), 98 state bits + outputs + ICG GATE"
+  },
+  {
+   "id": "B6_equiv_nonvacuity",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "1 NAND2->NOR2 netlist mutant is caught"
+  },
+  {
+   "id": "B7_sta_icg_reset_ss_n40C_1v60",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "6 checks MET, 0 unconstrained"
+  },
+  {
+   "id": "B7_sta_icg_reset_ss_100C_1v60",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "6 checks MET, 0 unconstrained"
+  },
+  {
+   "id": "B7_sta_icg_reset_tt_025C_1v80",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "6 checks MET, 0 unconstrained"
+  },
+  {
+   "id": "B7_sta_icg_reset_ff_n40C_1v95",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "6 checks MET, 0 unconstrained"
+  },
+  {
+   "id": "C1_magic_drc",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "magic__drc_error__count=0"
+  },
+  {
+   "id": "C2_lvs",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "design__lvs_error__count=0"
+  },
+  {
+   "id": "C3_route_drc",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "route__drc_errors=0"
+  },
+  {
+   "id": "C4_antenna",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "antenna nets=0"
+  },
+  {
+   "id": "C5_setup_all_corners",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "setup ws=5.698 ns"
+  },
+  {
+   "id": "C6_hold_all_corners",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "hold ws=0.162 ns"
+  },
+  {
+   "id": "C7_max_cap_fanout",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "max cap/fanout violations 0"
+  },
+  {
+   "id": "C8_max_slew",
+   "status": "WARN",
+   "mandatory": false,
+   "evidence": "10 max-slew pins (accepted <= 0.84 ns vs 0.75 limit, lib table 1.5)"
+  },
+  {
+   "id": "C9_utilization",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "util=0.844"
+  },
+  {
+   "id": "C10_latch_unmapped",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "latches 0, unmapped 0, synth check errors 0"
+  },
+  {
+   "id": "C11_power_grid",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "IR drop worst 7.31e-05 V"
+  },
+  {
+   "id": "C12_tt_precheck",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "15/15 (<npu1x1>/runs/audit/ci_38113024258/precheck_reports/results.md)"
+  },
+  {
+   "id": "C13_ci_gds_matches_local",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "gds run 38113024258 on ce832bbafac3472bc7360173b35ae52156fc60fa: success, netlist identical"
+  },
+  {
+   "id": "C14_gds_xor_ci_vs_local",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "XOR layers=34 differing=0 top=tt_um_akln0401_npu/tt_um_akln0401_npu bbox=(0,0;161,111.52)"
+  },
+  {
+   "id": "C15_tt_check_docs",
+   "status": "PASS",
+   "mandatory": true,
+   "evidence": "tt_tool.py --check-docs"
+  },
+  {
+   "id": "D1_cosim_unit_delay",
+   "status": "PASS",
+   "mandatory": false,
+   "evidence": "seed 4242, 200k cycles: COSIM seed=4242 cycles=201284 errors=0 | writes A0 418 A1 33"
+  }
+ ],
+ "summary": {
+  "PASS": 35,
+  "FAIL": 0,
+  "WARN": 1,
+  "BLOCKED": 0,
+  "NOT_RUN": 0,
+  "INFO": 1
+ }
+}

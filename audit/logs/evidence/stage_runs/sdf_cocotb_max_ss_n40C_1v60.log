@@ -1,0 +1,60 @@
+rm -f results.xml
+rm -f results.xml
+COCOTB_TEST_MODULES=test COCOTB_TESTCASE=  COCOTB_TOPLEVEL=tb TOPLEVEL_LANG=verilog COCOTB_RANDOM_SEED=77      \
+	 /usr/bin/vvp -m /work/tools/.cocotb2/cocotb/libs/libcocotbvpi_icarus.so   sim_build/max_ss_n40C_1v60/sim.vvp   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:242  in gpi_load_users                  Loaded entry library: '/usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0'
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:233  in gpi_load_users                  Running entry func 'initialize' from loaded library '/work/tools/.cocotb2/cocotb/simulator.cpython-312-x86_64-linux-gnu.so'
+     -.--ns INFO     pygpi                              ..ib/pygpi/embed.cpp:114  in initialize                      Using Python 3.12.12 interpreter at /opt/venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:74   in gpi_print_registered_impl       GPI: VPI support registered
+     0.00ns INFO     cocotb.initialize                  Seeding Python random module with 77
+     0.00ns INFO     cocotb.initialize                  Initialized cocotb v2.1.0 from /work/tools/.cocotb2/cocotb
+     0.00ns INFO     cocotb.initialize                  Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb.regression                  Running tests
+     0.00ns INFO     cocotb.regression                  running test.test_reset_and_id (1/8)
+                                                            ID bytes, reset values, pin directions; reset in the middle of a computation.
+   830.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+ 13850.00ns INFO     cocotb.regression                  test.test_reset_and_id passed
+ 13850.00ns INFO     cocotb.regression                  running test.test_matmul_random (2/8)
+                                                            Random int4 matrix products C = A*B (inner dimension K) against Python.
+ 14680.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+ 74040.00ns INFO     cocotb.regression                  test.test_matmul_random passed
+ 74040.00ns INFO     cocotb.regression                  running test.test_worst_case_and_wrap (3/8)
+                                                            -8*-8 every step: no overflow up to (2^(ACC_W-1)-1)//64 steps, then two's-complement wrap.
+ 74870.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+225930.00ns INFO     cocotb.regression                  test.test_worst_case_and_wrap passed
+225930.00ns INFO     cocotb.regression                  running test.test_auto_step (4/8)
+                                                            CTRL.auto: a B1 write also steps, with the B bytes written in that same write.
+226760.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+236560.00ns INFO     cocotb.regression                  test.test_auto_step passed
+236560.00ns INFO     cocotb.regression                  running test.test_clear (5/8)
+                                                            Clear; clear and step in the same CTRL write only clears.
+237390.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+242850.00ns INFO     cocotb.regression                  test.test_clear passed
+242850.00ns INFO     cocotb.regression                  running test.test_row_enable_and_clock_gating (6/8)
+                                                            ROWEN: disabled rows hold, also in test mode (clocks forced on). Count the edges of
+243680.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+261220.01ns INFO     cocotb.regression                  test.test_row_enable_and_clock_gating passed
+261220.01ns INFO     cocotb.regression                  running test.test_write_protocol (7/8)
+                                                            Asynchronous strobe at any phase, minimum hold/gap, garbage on the bus between
+262050.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+277270.01ns INFO     cocotb.regression                  test.test_write_protocol passed
+277270.01ns INFO     cocotb.regression                  running test.test_scan_chain (8/8)
+                                                            Shift through the whole chain: length, capture of every field at its mapped position,
+278100.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+278100.01ns INFO     cocotb.tb                          scan chain: 96 flops
+289720.01ns INFO     cocotb.regression                  test.test_scan_chain passed
+289720.01ns INFO     cocotb.regression                  ***********************************************************************************************
+                                                        ** TEST                                   STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ***********************************************************************************************
+                                                        ** test.test_reset_and_id                  PASS       13850.00           0.29      47150.90  **
+                                                        ** test.test_matmul_random                 PASS       60190.00           2.01      29944.44  **
+                                                        ** test.test_worst_case_and_wrap           PASS      151890.00           2.84      53510.99  **
+                                                        ** test.test_auto_step                     PASS       10630.00           0.19      56061.46  **
+                                                        ** test.test_clear                         PASS        6290.00           0.06     104984.10  **
+                                                        ** test.test_row_enable_and_clock_gating   PASS       18370.00           0.21      87359.62  **
+                                                        ** test.test_write_protocol                PASS       16050.00           0.16     102811.78  **
+                                                        ** test.test_scan_chain                    PASS       12450.00           0.58      21642.99  **
+                                                        ***********************************************************************************************
+                                                        ** TESTS=8 PASS=8 FAIL=0 SKIP=0                      289720.01           6.34      45705.54  **
+                                                        ***********************************************************************************************
+VCD info: dumpfile tb.fst opened for output.

@@ -1,0 +1,5 @@
+audit rtl seed=1 PASS TESTS=9 PASS=9 FAIL=0
+audit rtl seed=2 PASS TESTS=9 PASS=9 FAIL=0
+audit rtl seed=3 PASS TESTS=9 PASS=9 FAIL=0
+audit gl seed=1 PASS TESTS=9 PASS=9 FAIL=0
+audit gl seed=2 PASS TESTS=9 PASS=9 FAIL=0

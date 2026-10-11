@@ -1,0 +1,41 @@
+OpenSTA 2.7.0 GITDIR-NOT Copyright (c) 2025, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+Warning: /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v line 1378, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_111.
+Warning: /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v line 1381, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_119.
+Warning: /work/runs/wokwi/final/nl/tt_um_akln0401_npu.nl.v line 2300, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_TAPCELL_ROW_0_78.
+Annotated 4546 pin activities.
+--- annotation
+vcd          4546
+unannotated     0
+--- power
+Group                    Internal    Switching      Leakage        Total
+                            Power        Power        Power        Power (Watts)
+------------------------------------------------------------------------
+Sequential           1.500358e-04 1.693032e-07 1.570661e-10 1.502053e-04  41.9%
+Combinational        1.703478e-06 2.042735e-06 2.196191e-09 3.748409e-06   1.0%
+Clock                1.381794e-04 6.653895e-05 1.314917e-09 2.047197e-04  57.1%
+Macro                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+Pad                  0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+------------------------------------------------------------------------
+Total                2.899191e-04 6.875100e-05 3.668171e-09 3.586737e-04 100.0%
+                            80.8%        19.2%         0.0%
+--- top instances
+     Internal    Switching      Leakage        Total
+        Power        Power        Power        Power (Watts)
+----------------------------------------------------
+ 6.899762e-06 5.418394e-06 6.021649e-12 1.231816e-05 clkbuf_0_clk_regs
+ 6.833644e-06 5.243467e-06 6.021710e-12 1.207712e-05 clkbuf_0_i_array.g_row[0].g_col[0].i_pe.clk
+ 6.830750e-06 5.018643e-06 6.021710e-12 1.184940e-05 clkbuf_0_i_array.g_row[1].g_col[0].i_pe.clk
+ 6.821061e-06 4.269684e-06 6.021710e-12 1.109075e-05 clkbuf_2_1__f_i_array.g_row[0].g_col[0].i_pe.clk
+ 6.763333e-06 3.674930e-06 6.021710e-12 1.043827e-05 clkbuf_2_3__f_i_array.g_row[1].g_col[0].i_pe.clk
+ 6.759973e-06 3.659709e-06 6.021710e-12 1.041969e-05 clkbuf_2_0__f_i_array.g_row[0].g_col[0].i_pe.clk
+ 6.747426e-06 3.516123e-06 6.021710e-12 1.026356e-05 clkbuf_2_1__f_i_array.g_row[1].g_col[0].i_pe.clk
+ 6.742961e-06 3.503127e-06 6.021649e-12 1.024609e-05 clkbuf_2_2__f_clk_regs
+ 6.740138e-06 3.474905e-06 6.021649e-12 1.021505e-05 clkbuf_2_0__f_clk_regs
+ 6.738188e-06 3.424061e-06 6.021710e-12 1.016226e-05 clkbuf_2_0__f_i_array.g_row[1].g_col[0].i_pe.clk
+ 6.728152e-06 3.355264e-06 6.021649e-12 1.008342e-05 clkbuf_2_1__f_clk_regs
+ 6.725204e-06 3.312567e-06 6.021710e-12 1.003778e-05 clkbuf_2_2__f_i_array.g_row[0].g_col[0].i_pe.clk

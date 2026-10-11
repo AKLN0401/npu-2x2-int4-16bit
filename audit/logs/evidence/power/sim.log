@@ -1,0 +1,8 @@
+max_r11 POWER_TB tm=0 rowen=3 gap=2 work=1 cycles=20000 window_ns=399990 steps=952 acc00=390 acc11=280
+max_r11 POWER_TB tm=1 rowen=3 gap=2 work=1 cycles=20000 window_ns=399990 steps=952 acc00=390 acc11=280
+max_r01 POWER_TB tm=0 rowen=1 gap=2 work=1 cycles=20000 window_ns=399990 steps=952 acc00=390 acc11=0
+max_r01 POWER_TB tm=1 rowen=1 gap=2 work=1 cycles=20000 window_ns=399990 steps=952 acc00=390 acc11=0
+slow_r11 POWER_TB tm=0 rowen=3 gap=94 work=1 cycles=20000 window_ns=399990 steps=67 acc00=418 acc11=-148
+slow_r11 POWER_TB tm=1 rowen=3 gap=94 work=1 cycles=20000 window_ns=399990 steps=67 acc00=418 acc11=-148
+idle POWER_TB tm=0 rowen=3 gap=2 work=0 cycles=20000 window_ns=399990 steps=0 acc00=0 acc11=0
+idle POWER_TB tm=1 rowen=3 gap=2 work=0 cycles=20000 window_ns=399990 steps=0 acc00=0 acc11=0

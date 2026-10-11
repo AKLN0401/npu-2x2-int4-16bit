@@ -1,0 +1,69 @@
+rm -f results.xml
+mkdir -p sim_build/rtl
+/usr/bin/iverilog -o sim_build/rtl/sim.vvp -s tb -g2012 -DSIM -f sim_build/rtl/cmds.f  /work/src/project.v /work/src/npu_array.v /work/src/npu_pe.v /work/src/dft/clk_gate.v /work/test/tb.v
+rm -f results.xml
+COCOTB_TEST_MODULES=audit_arith COCOTB_TESTCASE=  COCOTB_TOPLEVEL=tb TOPLEVEL_LANG=verilog       \
+	 /usr/bin/vvp -m /work/tools/.cocotb2/cocotb/libs/libcocotbvpi_icarus.so   sim_build/rtl/sim.vvp   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:242  in gpi_load_users                  Loaded entry library: '/usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0'
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:233  in gpi_load_users                  Running entry func 'initialize' from loaded library '/work/tools/.cocotb2/cocotb/simulator.cpython-312-x86_64-linux-gnu.so'
+     -.--ns INFO     pygpi                              ..ib/pygpi/embed.cpp:114  in initialize                      Using Python 3.12.12 interpreter at /opt/venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:74   in gpi_print_registered_impl       GPI: VPI support registered
+     0.00ns INFO     cocotb.initialize                  Seeding Python random module with 1791734395
+     0.00ns INFO     cocotb.initialize                  Initialized cocotb v2.1.0 from /work/tools/.cocotb2/cocotb
+     0.00ns INFO     cocotb.initialize                  Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb.regression                  Running tests
+     0.00ns INFO     cocotb.regression                  running audit_arith.t01_exhaustive_operand_pairs (1/9)
+                                                            All 16x16 signed int4 pairs on every one of the 4 multiplier/accumulator instances.
+     0.00ns INFO     cocotb.tb                          audit seed 1001 (GL=False)
+717630.00ns INFO     cocotb.tb                          each of the 4 PEs checked on all 256 operand pairs (incl. 32-bit sign extension)
+717630.00ns INFO     cocotb.regression                  audit_arith.t01_exhaustive_operand_pairs passed
+717630.00ns INFO     cocotb.regression                  running audit_arith.t02_exact_overflow_boundaries (2/9)
+                                                            Exact 16-bit boundaries in both directions, all lanes.
+717630.00ns INFO     cocotb.tb                          audit seed 1002 (GL=False)
+1198520.00ns INFO     cocotb.regression                  audit_arith.t02_exact_overflow_boundaries passed
+1198520.00ns INFO     cocotb.regression                  running audit_arith.t03_alternating_and_random_long (3/9)
+                                                            Long accumulation without clear: alternating +/- products, extremes-weighted random
+1198520.00ns INFO     cocotb.tb                          audit seed 1003 (GL=False)
+1916850.00ns INFO     cocotb.tb                          exact sums at end: [[1808, 1344], [721, -60]], 5129 bus writes
+1916850.00ns INFO     cocotb.regression                  audit_arith.t03_alternating_and_random_long passed
+1916850.00ns INFO     cocotb.regression                  running audit_arith.t04_zero_clear_restart (4/9)
+                                                            All-zero / one-zero operands, clear mid-run, restart, clear+step = clear only,
+1916850.00ns INFO     cocotb.tb                          audit seed 1004 (GL=False)
+2002800.00ns INFO     cocotb.regression                  audit_arith.t04_zero_clear_restart passed
+2002800.00ns INFO     cocotb.regression                  running audit_arith.t05_reset_cases (5/9)
+                                                            Reset while idle, reset asserted asynchronously at a random phase during an active
+2002800.00ns INFO     cocotb.tb                          audit seed 1005 (GL=False)
+2110630.00ns INFO     cocotb.regression                  audit_arith.t05_reset_cases passed
+2110630.00ns INFO     cocotb.regression                  running audit_arith.t06_lane_isolation_and_read_port (6/9)
+                                                            Distinct per-lane values under every ROWEN mask; unimplemented lanes 4..15 read 0;
+2110630.00ns INFO     cocotb.tb                          audit seed 1006 (GL=False)
+2142820.00ns INFO     cocotb.regression                  audit_arith.t06_lane_isolation_and_read_port passed
+2142820.00ns INFO     cocotb.regression                  running audit_arith.t07_matmul_reference (7/9)
+                                                            C = A.B for 2x2 results with K up to 511, plus a 4x4 = (4x8).(8x4) product computed by
+2142820.01ns INFO     cocotb.tb                          audit seed 1007 (GL=False)
+2428270.01ns INFO     cocotb.regression                  audit_arith.t07_matmul_reference passed
+2428270.01ns INFO     cocotb.regression                  running audit_arith.t08_auto_step_and_write_counting (8/9)
+                                                            Auto mode: B1 writes step with the newly written B; a CTRL write rewrites auto (it is
+2428270.01ns INFO     cocotb.tb                          audit seed 1008 (GL=False)
+2448700.01ns INFO     cocotb.regression                  audit_arith.t08_auto_step_and_write_counting passed
+2448700.01ns INFO     cocotb.regression                  running audit_arith.t09_strobe_high_across_reset (9/9)
+                                                            Characterisation (host rule): if the strobe is high while rst_n is released, the
+2448700.01ns INFO     cocotb.tb                          audit seed 1009 (GL=False)
+2452630.01ns WARNING  cocotb.tb                          strobe high across reset release -> write performed after reset: True
+2452630.01ns INFO     cocotb.regression                  audit_arith.t09_strobe_high_across_reset passed
+2452630.01ns INFO     cocotb.regression                  ******************************************************************************************************
+                                                        ** TEST                                          STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ******************************************************************************************************
+                                                        ** audit_arith.t01_exhaustive_operand_pairs       PASS      717630.00           1.13     633422.49  **
+                                                        ** audit_arith.t02_exact_overflow_boundaries      PASS      480890.00           0.71     678518.53  **
+                                                        ** audit_arith.t03_alternating_and_random_long    PASS      718330.00           1.14     631623.65  **
+                                                        ** audit_arith.t04_zero_clear_restart             PASS       85950.00           0.13     649547.85  **
+                                                        ** audit_arith.t05_reset_cases                    PASS      107830.00           0.16     666253.23  **
+                                                        ** audit_arith.t06_lane_isolation_and_read_port   PASS       32190.00           0.05     646163.36  **
+                                                        ** audit_arith.t07_matmul_reference               PASS      285450.00           0.45     633370.49  **
+                                                        ** audit_arith.t08_auto_step_and_write_counting   PASS       20430.00           0.03     775413.73  **
+                                                        ** audit_arith.t09_strobe_high_across_reset       PASS        3930.00           0.01     662948.08  **
+                                                        ******************************************************************************************************
+                                                        ** TESTS=9 PASS=9 FAIL=0 SKIP=0                            2452630.01           3.81     643675.74  **
+                                                        ******************************************************************************************************
+VCD info: dumpfile tb.fst opened for output.

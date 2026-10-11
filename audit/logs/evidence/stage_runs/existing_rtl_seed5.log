@@ -1,0 +1,62 @@
+rm -f results.xml
+mkdir -p sim_build/rtl
+/usr/bin/iverilog -o sim_build/rtl/sim.vvp -s tb -g2012 -DSIM -I/work/test/../src -f sim_build/rtl/cmds.f  /work/test/../src/project.v /work/test/../src/npu_array.v /work/test/../src/npu_pe.v /work/test/../src/dft/clk_gate.v /work/test/tb.v
+rm -f results.xml
+COCOTB_TEST_MODULES=test COCOTB_TESTCASE=  COCOTB_TOPLEVEL=tb TOPLEVEL_LANG=verilog COCOTB_RANDOM_SEED=5      \
+	 /usr/bin/vvp -m /work/tools/.cocotb2/cocotb/libs/libcocotbvpi_icarus.so   sim_build/rtl/sim.vvp -fst   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:242  in gpi_load_users                  Loaded entry library: '/usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0'
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:233  in gpi_load_users                  Running entry func 'initialize' from loaded library '/work/tools/.cocotb2/cocotb/simulator.cpython-312-x86_64-linux-gnu.so'
+     -.--ns INFO     pygpi                              ..ib/pygpi/embed.cpp:114  in initialize                      Using Python 3.12.12 interpreter at /opt/venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:74   in gpi_print_registered_impl       GPI: VPI support registered
+     0.00ns INFO     cocotb.initialize                  Seeding Python random module with 5
+     0.00ns INFO     cocotb.initialize                  Initialized cocotb v2.1.0 from /work/tools/.cocotb2/cocotb
+     0.00ns INFO     cocotb.initialize                  Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb.regression                  Running tests
+     0.00ns INFO     cocotb.regression                  running test.test_reset_and_id (1/8)
+                                                            ID bytes, reset values, pin directions; reset in the middle of a computation.
+   830.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+ 13850.00ns INFO     cocotb.regression                  test.test_reset_and_id passed
+ 13850.00ns INFO     cocotb.regression                  running test.test_matmul_random (2/8)
+                                                            Random int4 matrix products C = A*B (inner dimension K) against Python.
+ 14680.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+ 96300.00ns INFO     cocotb.regression                  test.test_matmul_random passed
+ 96300.00ns INFO     cocotb.regression                  running test.test_worst_case_and_wrap (3/8)
+                                                            -8*-8 every step: no overflow up to (2^(ACC_W-1)-1)//64 steps, then two's-complement wrap.
+ 97130.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+248190.00ns INFO     cocotb.regression                  test.test_worst_case_and_wrap passed
+248190.00ns INFO     cocotb.regression                  running test.test_auto_step (4/8)
+                                                            CTRL.auto: a B1 write also steps, with the B bytes written in that same write.
+249020.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+258820.00ns INFO     cocotb.regression                  test.test_auto_step passed
+258820.00ns INFO     cocotb.regression                  running test.test_clear (5/8)
+                                                            Clear; clear and step in the same CTRL write only clears.
+259650.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+265110.00ns INFO     cocotb.regression                  test.test_clear passed
+265110.00ns INFO     cocotb.regression                  running test.test_row_enable_and_clock_gating (6/8)
+                                                            ROWEN: disabled rows hold, also in test mode (clocks forced on). Count the edges of
+265940.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+283480.01ns INFO     cocotb.regression                  test.test_row_enable_and_clock_gating passed
+283480.01ns INFO     cocotb.regression                  running test.test_write_protocol (7/8)
+                                                            Asynchronous strobe at any phase, minimum hold/gap, garbage on the bus between
+284310.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+299530.01ns INFO     cocotb.regression                  test.test_write_protocol passed
+299530.01ns INFO     cocotb.regression                  running test.test_scan_chain (8/8)
+                                                            Shift through the whole chain: length, capture of every field at its mapped position,
+300360.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+300360.01ns INFO     cocotb.tb                          scan chain: 96 flops
+311980.01ns INFO     cocotb.regression                  test.test_scan_chain passed
+311980.01ns INFO     cocotb.regression                  ***********************************************************************************************
+                                                        ** TEST                                   STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ***********************************************************************************************
+                                                        ** test.test_reset_and_id                  PASS       13850.00           0.02     731978.30  **
+                                                        ** test.test_matmul_random                 PASS       82450.00           0.12     713259.07  **
+                                                        ** test.test_worst_case_and_wrap           PASS      151890.00           0.19     795281.80  **
+                                                        ** test.test_auto_step                     PASS       10630.00           0.01     804003.47  **
+                                                        ** test.test_clear                         PASS        6290.00           0.01     844428.37  **
+                                                        ** test.test_row_enable_and_clock_gating   PASS       18370.00           0.02     826491.31  **
+                                                        ** test.test_write_protocol                PASS       16050.00           0.02     804611.22  **
+                                                        ** test.test_scan_chain                    PASS       12450.00           0.02     506145.56  **
+                                                        ***********************************************************************************************
+                                                        ** TESTS=8 PASS=8 FAIL=0 SKIP=0                      311980.01           0.42     751445.60  **
+                                                        ***********************************************************************************************
+FST info: dumpfile tb.fst opened for output.

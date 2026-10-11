@@ -1,0 +1,110 @@
+rm -f results.xml
+mkdir -p sim_build/gl
+/usr/bin/iverilog -o sim_build/gl/sim.vvp -s tb -g2012 -DGL_TEST -DFUNCTIONAL -DUSE_POWER_PINS -DSIM -DUNIT_DELAY=#1 -I/work/test/../src -f sim_build/gl/cmds.f  /pdk/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v /pdk/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v /work/test/gate_level_netlist.v /work/test/tb.v
+rm -f results.xml
+COCOTB_TEST_MODULES=test,test_arith COCOTB_TESTCASE=  COCOTB_TOPLEVEL=tb TOPLEVEL_LANG=verilog       \
+	 /usr/bin/vvp -m /work/tools/.cocotb2/cocotb/libs/libcocotbvpi_icarus.so   sim_build/gl/sim.vvp -fst   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:242  in gpi_load_users                  Loaded entry library: '/usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0'
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:233  in gpi_load_users                  Running entry func 'initialize' from loaded library '/work/tools/.cocotb2/cocotb/simulator.cpython-312-x86_64-linux-gnu.so'
+     -.--ns INFO     pygpi                              ..ib/pygpi/embed.cpp:114  in initialize                      Using Python 3.12.12 interpreter at /opt/venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:74   in gpi_print_registered_impl       GPI: VPI support registered
+     0.00ns INFO     cocotb.initialize                  Seeding Python random module with 1791734192
+     0.00ns INFO     cocotb.initialize                  Initialized cocotb v2.1.0 from /work/tools/.cocotb2/cocotb
+     0.00ns INFO     cocotb.initialize                  Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb.regression                  Running tests
+     0.00ns INFO     cocotb.regression                  running test.test_reset_and_id (1/17)
+                                                            ID bytes, reset values, pin directions; reset in the middle of a computation.
+   830.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+ 13850.00ns INFO     cocotb.regression                  test.test_reset_and_id passed
+ 13850.00ns INFO     cocotb.regression                  running test.test_matmul_random (2/17)
+                                                            Random int4 matrix products C = A*B (inner dimension K) against Python.
+ 14680.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+ 83700.00ns INFO     cocotb.regression                  test.test_matmul_random passed
+ 83700.00ns INFO     cocotb.regression                  running test.test_worst_case_and_wrap (3/17)
+                                                            -8*-8 every step: no overflow up to (2^(ACC_W-1)-1)//64 steps, then two's-complement wrap.
+ 84530.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+235590.00ns INFO     cocotb.regression                  test.test_worst_case_and_wrap passed
+235590.00ns INFO     cocotb.regression                  running test.test_auto_step (4/17)
+                                                            CTRL.auto: a B1 write also steps, with the B bytes written in that same write.
+236420.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+246220.00ns INFO     cocotb.regression                  test.test_auto_step passed
+246220.00ns INFO     cocotb.regression                  running test.test_clear (5/17)
+                                                            Clear; clear and step in the same CTRL write only clears.
+247050.00ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+252510.00ns INFO     cocotb.regression                  test.test_clear passed
+252510.00ns INFO     cocotb.regression                  running test.test_row_enable_and_clock_gating (6/17)
+                                                            ROWEN: disabled rows hold, also in test mode (clocks forced on). Count the edges of
+253340.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+270880.01ns INFO     cocotb.regression                  test.test_row_enable_and_clock_gating passed
+270880.01ns INFO     cocotb.regression                  running test.test_write_protocol (7/17)
+                                                            Asynchronous strobe at any phase, minimum hold/gap, garbage on the bus between
+271710.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+286930.01ns INFO     cocotb.regression                  test.test_write_protocol passed
+286930.01ns INFO     cocotb.regression                  running test.test_scan_chain (8/17)
+                                                            Shift through the whole chain: length, capture of every field at its mapped position,
+287760.01ns INFO     cocotb.tb                          NPU 2x2, ACC_W 16
+287760.01ns INFO     cocotb.tb                          scan chain: 96 flops
+299380.01ns INFO     cocotb.regression                  test.test_scan_chain passed
+299380.01ns INFO     cocotb.regression                  running test_arith.t01_exhaustive_operand_pairs (9/17)
+                                                            All 16x16 signed int4 pairs on every one of the 4 multiplier/accumulator instances.
+299380.01ns INFO     cocotb.tb                          audit seed 1001 (GL=True)
+1017010.01ns INFO     cocotb.tb                          each of the 4 PEs checked on all 256 operand pairs (incl. 32-bit sign extension)
+1017010.01ns INFO     cocotb.regression                  test_arith.t01_exhaustive_operand_pairs passed
+1017010.01ns INFO     cocotb.regression                  running test_arith.t02_exact_overflow_boundaries (10/17)
+                                                            Exact 16-bit boundaries in both directions, all lanes.
+1017010.01ns INFO     cocotb.tb                          audit seed 1002 (GL=True)
+1497900.01ns INFO     cocotb.regression                  test_arith.t02_exact_overflow_boundaries passed
+1497900.01ns INFO     cocotb.regression                  running test_arith.t03_alternating_and_random_long (11/17)
+                                                            Long accumulation without clear: alternating +/- products, extremes-weighted random
+1497900.01ns INFO     cocotb.tb                          audit seed 1003 (GL=True)
+2216230.01ns INFO     cocotb.tb                          exact sums at end: [[1808, 1344], [721, -60]], 5129 bus writes
+2216230.01ns INFO     cocotb.regression                  test_arith.t03_alternating_and_random_long passed
+2216230.01ns INFO     cocotb.regression                  running test_arith.t04_zero_clear_restart (12/17)
+                                                            All-zero / one-zero operands, clear mid-run, restart, clear+step = clear only,
+2216230.01ns INFO     cocotb.tb                          audit seed 1004 (GL=True)
+2302180.01ns INFO     cocotb.regression                  test_arith.t04_zero_clear_restart passed
+2302180.01ns INFO     cocotb.regression                  running test_arith.t05_reset_cases (13/17)
+                                                            Reset while idle, reset asserted asynchronously at a random phase during an active
+2302180.01ns INFO     cocotb.tb                          audit seed 1005 (GL=True)
+2410010.01ns INFO     cocotb.regression                  test_arith.t05_reset_cases passed
+2410010.01ns INFO     cocotb.regression                  running test_arith.t06_lane_isolation_and_read_port (14/17)
+                                                            Distinct per-lane values under every ROWEN mask; unimplemented lanes 4..15 read 0;
+2410010.01ns INFO     cocotb.tb                          audit seed 1006 (GL=True)
+2442200.01ns INFO     cocotb.regression                  test_arith.t06_lane_isolation_and_read_port passed
+2442200.01ns INFO     cocotb.regression                  running test_arith.t07_matmul_reference (15/17)
+                                                            C = A.B for 2x2 results with K up to 511, plus a 4x4 = (4x8).(8x4) product computed by
+2442200.01ns INFO     cocotb.tb                          audit seed 1007 (GL=True)
+2727650.01ns INFO     cocotb.regression                  test_arith.t07_matmul_reference passed
+2727650.01ns INFO     cocotb.regression                  running test_arith.t08_auto_step_and_write_counting (16/17)
+                                                            Auto mode: B1 writes step with the newly written B; a CTRL write rewrites auto (it is
+2727650.02ns INFO     cocotb.tb                          audit seed 1008 (GL=True)
+2748080.02ns INFO     cocotb.regression                  test_arith.t08_auto_step_and_write_counting passed
+2748080.02ns INFO     cocotb.regression                  running test_arith.t09_strobe_high_across_reset (17/17)
+                                                            Characterisation (host rule): if the strobe is high while rst_n is released, the
+2748080.02ns INFO     cocotb.tb                          audit seed 1009 (GL=True)
+2752010.02ns WARNING  cocotb.tb                          strobe high across reset release -> write performed after reset: True
+2752010.02ns INFO     cocotb.regression                  test_arith.t09_strobe_high_across_reset passed
+2752010.02ns INFO     cocotb.regression                  *****************************************************************************************************
+                                                        ** TEST                                         STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        *****************************************************************************************************
+                                                        ** test.test_reset_and_id                        PASS       13850.00           0.05     272406.64  **
+                                                        ** test.test_matmul_random                       PASS       69850.00           0.26     267813.81  **
+                                                        ** test.test_worst_case_and_wrap                 PASS      151890.00           0.48     314386.22  **
+                                                        ** test.test_auto_step                           PASS       10630.00           0.03     321424.51  **
+                                                        ** test.test_clear                               PASS        6290.00           0.02     417740.29  **
+                                                        ** test.test_row_enable_and_clock_gating         PASS       18370.00           0.07     268465.02  **
+                                                        ** test.test_write_protocol                      PASS       16050.00           0.05     326503.88  **
+                                                        ** test.test_scan_chain                          PASS       12450.00           0.14      88465.69  **
+                                                        ** test_arith.t01_exhaustive_operand_pairs       PASS      717630.00           1.85     388062.94  **
+                                                        ** test_arith.t02_exact_overflow_boundaries      PASS      480890.00           1.51     317640.85  **
+                                                        ** test_arith.t03_alternating_and_random_long    PASS      718330.00           5.49     130766.62  **
+                                                        ** test_arith.t04_zero_clear_restart             PASS       85950.00           0.33     263930.56  **
+                                                        ** test_arith.t05_reset_cases                    PASS      107830.00           0.29     369117.55  **
+                                                        ** test_arith.t06_lane_isolation_and_read_port   PASS       32190.00           0.07     433007.75  **
+                                                        ** test_arith.t07_matmul_reference               PASS      285450.00           1.28     223210.41  **
+                                                        ** test_arith.t08_auto_step_and_write_counting   PASS       20430.00           0.06     334921.06  **
+                                                        ** test_arith.t09_strobe_high_across_reset       PASS        3930.00           0.01     337565.30  **
+                                                        *****************************************************************************************************
+                                                        ** TESTS=17 PASS=17 FAIL=0 SKIP=0                         2752010.02          12.01     229123.57  **
+                                                        *****************************************************************************************************
+FST info: dumpfile tb.fst opened for output.

@@ -1,0 +1,9 @@
+cosim unit seed=9101: COSIM seed=9101 cycles=1000082 errors=0 | writes A0 2060 A1 1902 B0 1948 B1 77674 CTRL 8983 ROWEN 1987 RSEL 12043 r7 1851 | rand 45708 scan 85164 tm-bursts 102 resets 196 wraps 160 COSIM PASS 
+cosim unit seed=9102: COSIM seed=9102 cycles=1000054 errors=0 | writes A0 2171 A1 2001 B0 2118 B1 74625 CTRL 9623 ROWEN 2171 RSEL 11221 r7 2070 | rand 57521 scan 93033 tm-bursts 97 resets 200 wraps 155 COSIM PASS 
+cosim unit seed=9103: COSIM seed=9103 cycles=1003366 errors=0 | writes A0 2109 A1 1851 B0 2051 B1 78747 CTRL 9060 ROWEN 2026 RSEL 10633 r7 1969 | rand 50219 scan 84201 tm-bursts 94 resets 157 wraps 165 COSIM PASS 
+cosim unit seed=9104: COSIM seed=9104 cycles=1002063 errors=0 | writes A0 2216 A1 2027 B0 2175 B1 73207 CTRL 9818 ROWEN 2256 RSEL 11667 r7 2076 | rand 57181 scan 99677 tm-bursts 110 resets 183 wraps 149 COSIM PASS 
+cosim sdf max_ss_n40C_1v60 seed=9201: COSIM seed=9201 cycles=200201 errors=0 | writes A0 415 A1 380 B0 416 B1 16132 CTRL 1768 ROWEN 424 RSEL 2063 r7 344 | rand 7114 scan 17108 tm-bursts 25 resets 30 wraps 33 COSIM PASS 
+cosim sdf min_ff_n40C_1v95 seed=9201: COSIM seed=9201 cycles=200201 errors=0 | writes A0 415 A1 380 B0 416 B1 16132 CTRL 1768 ROWEN 424 RSEL 2063 r7 344 | rand 7114 scan 17108 tm-bursts 25 resets 30 wraps 33 COSIM PASS 
+cosim sdf nom_tt_025C_1v80 seed=9201: COSIM seed=9201 cycles=200201 errors=0 | writes A0 415 A1 380 B0 416 B1 16132 CTRL 1768 ROWEN 424 RSEL 2063 r7 344 | rand 7114 scan 17108 tm-bursts 25 resets 30 wraps 33 COSIM PASS 
+sdf cocotb max_ss_n40C_1v60 seed=77 PASS TESTS=8 PASS=8 FAIL=0
+sdf cocotb min_ff_n40C_1v95 seed=77 PASS TESTS=8 PASS=8 FAIL=0

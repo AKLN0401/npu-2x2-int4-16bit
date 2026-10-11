@@ -18,6 +18,7 @@ A 2×2 int4 multiply-accumulate array with 16-bit accumulators, one clock gate p
 | `test/` | cocotb tests through the pins (RTL and gate level); `scan_map.py` prints the scan chain map |
 | `test/extra/` | archived harnesses: RTL-vs-netlist co-simulation and SDF gate-level sims |
 | `tools/` | local helpers: container image, sims, hardening, precheck, layout renders |
+| `audit/` | pre-tapeout audit: reports, signoff checklist, power/clock-gating analysis, `run_pre_tapeout_audit.sh` |
 
 ## Running the tests
 

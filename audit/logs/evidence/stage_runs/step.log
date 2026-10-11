@@ -1,0 +1,301 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)
+
+-- Running command `read_verilog icg_bb.v; script step.ys' --
+
+1. Executing Verilog-2005 frontend: icg_bb.v
+Parsing Verilog input from `icg_bb.v' to AST representation.
+Generating RTLIL representation for module `\sky130_fd_sc_hd__dlclkp_1'.
+Successfully finished Verilog frontend.
+
+-- Executing script file `step.ys' --
+
+2. Executing RTLIL frontend.
+Input filename: gate_named.il
+
+3. Executing RTLIL frontend.
+Input filename: gold_named.il
+Ignoring blackbox re-definition of module \sky130_fd_sc_hd__dlclkp_1.
+
+4. Executing Verilog-2005 frontend: chk.v
+Parsing Verilog input from `chk.v' to AST representation.
+Generating RTLIL representation for module `\chk'.
+Successfully finished Verilog frontend.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1. Analyzing design hierarchy..
+Top module:  \chk
+Used module:     \gate
+Used module:     \gold
+
+5.2. Analyzing design hierarchy..
+Top module:  \chk
+Used module:     \gate
+Used module:     \gold
+Removed 0 unused modules.
+
+6. Executing FLATTEN pass (flatten design).
+Deleting now unused module gold.
+Deleting now unused module gate.
+<suppressed ~2 debug messages>
+
+7. Executing ASYNC2SYNC pass.
+Replacing chk.$flatten\t.\_1885_.$auto$liberty.cc:255:create_ff$1470 ($_DFF_PN0_): ARST=\t.rst_n, D=\t._1884_.IQ, Q=\t._1885_.IQ
+Replacing chk.$flatten\t.\_1884_.$auto$liberty.cc:255:create_ff$1470 ($_DFF_PN0_): ARST=\t.rst_n, D=1'1, Q=\t._1884_.IQ
+Replacing chk.$flatten\g.$procdff$199 ($adff): ARST=\g.rst_n, D={ \g.rst_sync[0] 1'1 }, Q={ \g.rst_sync[1] \g.rst_sync[0] }
+
+8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \chk..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+9. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Import set-constraint for this timestep: \g.a_reg[0] = \t.a_reg[0]
+Import set-constraint for this timestep: \g.a_reg[1] = \t.a_reg[1]
+Import set-constraint for this timestep: \g.a_reg[2] = \t.a_reg[2]
+Import set-constraint for this timestep: \g.a_reg[3] = \t.a_reg[3]
+Import set-constraint for this timestep: \g.a_reg[4] = \t.a_reg[4]
+Import set-constraint for this timestep: \g.a_reg[5] = \t.a_reg[5]
+Import set-constraint for this timestep: \g.a_reg[6] = \t.a_reg[6]
+Import set-constraint for this timestep: \g.a_reg[7] = \t.a_reg[7]
+Import set-constraint for this timestep: \g.acc[0] = \t.acc[0]
+Import set-constraint for this timestep: \g.acc[10] = \t.acc[10]
+Import set-constraint for this timestep: \g.acc[11] = \t.acc[11]
+Import set-constraint for this timestep: \g.acc[12] = \t.acc[12]
+Import set-constraint for this timestep: \g.acc[13] = \t.acc[13]
+Import set-constraint for this timestep: \g.acc[14] = \t.acc[14]
+Import set-constraint for this timestep: \g.acc[15] = \t.acc[15]
+Import set-constraint for this timestep: \g.acc[16] = \t.acc[16]
+Import set-constraint for this timestep: \g.acc[17] = \t.acc[17]
+Import set-constraint for this timestep: \g.acc[18] = \t.acc[18]
+Import set-constraint for this timestep: \g.acc[19] = \t.acc[19]
+Import set-constraint for this timestep: \g.acc[1] = \t.acc[1]
+Import set-constraint for this timestep: \g.acc[20] = \t.acc[20]
+Import set-constraint for this timestep: \g.acc[21] = \t.acc[21]
+Import set-constraint for this timestep: \g.acc[22] = \t.acc[22]
+Import set-constraint for this timestep: \g.acc[23] = \t.acc[23]
+Import set-constraint for this timestep: \g.acc[24] = \t.acc[24]
+Import set-constraint for this timestep: \g.acc[25] = \t.acc[25]
+Import set-constraint for this timestep: \g.acc[26] = \t.acc[26]
+Import set-constraint for this timestep: \g.acc[27] = \t.acc[27]
+Import set-constraint for this timestep: \g.acc[28] = \t.acc[28]
+Import set-constraint for this timestep: \g.acc[29] = \t.acc[29]
+Import set-constraint for this timestep: \g.acc[2] = \t.acc[2]
+Import set-constraint for this timestep: \g.acc[30] = \t.acc[30]
+Import set-constraint for this timestep: \g.acc[31] = \t.acc[31]
+Import set-constraint for this timestep: \g.acc[32] = \t.acc[32]
+Import set-constraint for this timestep: \g.acc[33] = \t.acc[33]
+Import set-constraint for this timestep: \g.acc[34] = \t.acc[34]
+Import set-constraint for this timestep: \g.acc[35] = \t.acc[35]
+Import set-constraint for this timestep: \g.acc[36] = \t.acc[36]
+Import set-constraint for this timestep: \g.acc[37] = \t.acc[37]
+Import set-constraint for this timestep: \g.acc[38] = \t.acc[38]
+Import set-constraint for this timestep: \g.acc[39] = \t.acc[39]
+Import set-constraint for this timestep: \g.acc[3] = \t.acc[3]
+Import set-constraint for this timestep: \g.acc[40] = \t.acc[40]
+Import set-constraint for this timestep: \g.acc[41] = \t.acc[41]
+Import set-constraint for this timestep: \g.acc[42] = \t.acc[42]
+Import set-constraint for this timestep: \g.acc[43] = \t.acc[43]
+Import set-constraint for this timestep: \g.acc[44] = \t.acc[44]
+Import set-constraint for this timestep: \g.acc[45] = \t.acc[45]
+Import set-constraint for this timestep: \g.acc[46] = \t.acc[46]
+Import set-constraint for this timestep: \g.acc[47] = \t.acc[47]
+Import set-constraint for this timestep: \g.acc[48] = \t.acc[48]
+Import set-constraint for this timestep: \g.acc[49] = \t.acc[49]
+Import set-constraint for this timestep: \g.acc[4] = \t.acc[4]
+Import set-constraint for this timestep: \g.acc[50] = \t.acc[50]
+Import set-constraint for this timestep: \g.acc[51] = \t.acc[51]
+Import set-constraint for this timestep: \g.acc[52] = \t.acc[52]
+Import set-constraint for this timestep: \g.acc[53] = \t.acc[53]
+Import set-constraint for this timestep: \g.acc[54] = \t.acc[54]
+Import set-constraint for this timestep: \g.acc[55] = \t.acc[55]
+Import set-constraint for this timestep: \g.acc[56] = \t.acc[56]
+Import set-constraint for this timestep: \g.acc[57] = \t.acc[57]
+Import set-constraint for this timestep: \g.acc[58] = \t.acc[58]
+Import set-constraint for this timestep: \g.acc[59] = \t.acc[59]
+Import set-constraint for this timestep: \g.acc[5] = \t.acc[5]
+Import set-constraint for this timestep: \g.acc[60] = \t.acc[60]
+Import set-constraint for this timestep: \g.acc[61] = \t.acc[61]
+Import set-constraint for this timestep: \g.acc[62] = \t.acc[62]
+Import set-constraint for this timestep: \g.acc[63] = \t.acc[63]
+Import set-constraint for this timestep: \g.acc[6] = \t.acc[6]
+Import set-constraint for this timestep: \g.acc[7] = \t.acc[7]
+Import set-constraint for this timestep: \g.acc[8] = \t.acc[8]
+Import set-constraint for this timestep: \g.acc[9] = \t.acc[9]
+Import set-constraint for this timestep: \g.auto = \t.auto
+Import set-constraint for this timestep: \g.b_reg[0] = \t.b_reg[0]
+Import set-constraint for this timestep: \g.b_reg[1] = \t.b_reg[1]
+Import set-constraint for this timestep: \g.b_reg[2] = \t.b_reg[2]
+Import set-constraint for this timestep: \g.b_reg[3] = \t.b_reg[3]
+Import set-constraint for this timestep: \g.b_reg[4] = \t.b_reg[4]
+Import set-constraint for this timestep: \g.b_reg[5] = \t.b_reg[5]
+Import set-constraint for this timestep: \g.b_reg[6] = \t.b_reg[6]
+Import set-constraint for this timestep: \g.b_reg[7] = \t.b_reg[7]
+Import set-constraint for this timestep: \g.clear_q = \t.clear_q
+Import set-constraint for this timestep: \g.i_array.row_en[0] = \t.i_array.row_en[0]
+Import set-constraint for this timestep: \g.i_array.row_en[1] = \t.i_array.row_en[1]
+Import set-constraint for this timestep: \g.idx[0] = \t.idx[0]
+Import set-constraint for this timestep: \g.idx[1] = \t.idx[1]
+Import set-constraint for this timestep: \g.idx[2] = \t.idx[2]
+Import set-constraint for this timestep: \g.idx[3] = \t.idx[3]
+Import set-constraint for this timestep: \g.rsel[4] = \t.rsel[4]
+Import set-constraint for this timestep: \g.rsel[5] = \t.rsel[5]
+Import set-constraint for this timestep: \g.rsel[6] = \t.rsel[6]
+Import set-constraint for this timestep: \g.rsel[7] = \t.rsel[7]
+Import set-constraint for this timestep: \g.rst_sync[0] = \t.rst_sync[0]
+Import set-constraint for this timestep: \g.rst_sync[1] = \t.rst_sync[1]
+Import set-constraint for this timestep: \g.st[0] = \t.st[0]
+Import set-constraint for this timestep: \g.st[1] = \t.st[1]
+Import set-constraint for this timestep: \g.st[2] = \t.st[2]
+Import set-constraint for this timestep: \g.st[30] = \t.st[30]
+Final constraint equation: { \g.st[30] \g.st[2] \g.st[1] \g.st[0] \g.rst_sync[1] \g.rst_sync[0] \g.rsel[7] \g.rsel[6] \g.rsel[5] \g.rsel[4] \g.idx[3] \g.idx[2] \g.idx[1] \g.idx[0] \g.i_array.row_en[1] \g.i_array.row_en[0] \g.clear_q \g.b_reg[7] \g.b_reg[6] \g.b_reg[5] \g.b_reg[4] \g.b_reg[3] \g.b_reg[2] \g.b_reg[1] \g.b_reg[0] \g.auto \g.acc[9] \g.acc[8] \g.acc[7] \g.acc[6] \g.acc[63] \g.acc[62] \g.acc[61] \g.acc[60] \g.acc[5] \g.acc[59] \g.acc[58] \g.acc[57] \g.acc[56] \g.acc[55] \g.acc[54] \g.acc[53] \g.acc[52] \g.acc[51] \g.acc[50] \g.acc[4] \g.acc[49] \g.acc[48] \g.acc[47] \g.acc[46] \g.acc[45] \g.acc[44] \g.acc[43] \g.acc[42] \g.acc[41] \g.acc[40] \g.acc[3] \g.acc[39] \g.acc[38] \g.acc[37] \g.acc[36] \g.acc[35] \g.acc[34] \g.acc[33] \g.acc[32] \g.acc[31] \g.acc[30] \g.acc[2] \g.acc[29] \g.acc[28] \g.acc[27] \g.acc[26] \g.acc[25] \g.acc[24] \g.acc[23] \g.acc[22] \g.acc[21] \g.acc[20] \g.acc[1] \g.acc[19] \g.acc[18] \g.acc[17] \g.acc[16] \g.acc[15] \g.acc[14] \g.acc[13] \g.acc[12] \g.acc[11] \g.acc[10] \g.acc[0] \g.a_reg[7] \g.a_reg[6] \g.a_reg[5] \g.a_reg[4] \g.a_reg[3] \g.a_reg[2] \g.a_reg[1] \g.a_reg[0] } = { \t.st[30] \t.st[2] \t.st[1] \t.st[0] \t.rst_sync[1] \t.rst_sync[0] \t.rsel[7] \t.rsel[6] \t.rsel[5] \t.rsel[4] \t.idx[3] \t.idx[2] \t.idx[1] \t.idx[0] \t.i_array.row_en[1] \t.i_array.row_en[0] \t.clear_q \t.b_reg[7] \t.b_reg[6] \t.b_reg[5] \t.b_reg[4] \t.b_reg[3] \t.b_reg[2] \t.b_reg[1] \t.b_reg[0] \t.auto \t.acc[9] \t.acc[8] \t.acc[7] \t.acc[6] \t.acc[63] \t.acc[62] \t.acc[61] \t.acc[60] \t.acc[5] \t.acc[59] \t.acc[58] \t.acc[57] \t.acc[56] \t.acc[55] \t.acc[54] \t.acc[53] \t.acc[52] \t.acc[51] \t.acc[50] \t.acc[4] \t.acc[49] \t.acc[48] \t.acc[47] \t.acc[46] \t.acc[45] \t.acc[44] \t.acc[43] \t.acc[42] \t.acc[41] \t.acc[40] \t.acc[3] \t.acc[39] \t.acc[38] \t.acc[37] \t.acc[36] \t.acc[35] \t.acc[34] \t.acc[33] \t.acc[32] \t.acc[31] \t.acc[30] \t.acc[2] \t.acc[29] \t.acc[28] \t.acc[27] \t.acc[26] \t.acc[25] \t.acc[24] \t.acc[23] \t.acc[22] \t.acc[21] \t.acc[20] \t.acc[1] \t.acc[19] \t.acc[18] \t.acc[17] \t.acc[16] \t.acc[15] \t.acc[14] \t.acc[13] \t.acc[12] \t.acc[11] \t.acc[10] \t.acc[0] \t.a_reg[7] \t.a_reg[6] \t.a_reg[5] \t.a_reg[4] \t.a_reg[3] \t.a_reg[2] \t.a_reg[1] \t.a_reg[0] }
+Warning: Failed to import cell g.i_array.g_row[0].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Warning: Failed to import cell g.i_array.g_row[1].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Warning: Failed to import cell t.i_array.g_row[0].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Warning: Failed to import cell t.i_array.g_row[1].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Imported 5744 cells to SAT database.
+No constraints for initial state found.
+
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Warning: Failed to import cell g.i_array.g_row[0].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Warning: Failed to import cell g.i_array.g_row[1].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Warning: Failed to import cell t.i_array.g_row[0].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Warning: Failed to import cell t.i_array.g_row[1].i_cg.icg (type sky130_fd_sc_hd__dlclkp_1) to SAT database.
+Imported 5744 cells to SAT database.
+Import proof-constraint: \g.a_reg[0] = \t.a_reg[0]
+Import proof-constraint: \g.a_reg[1] = \t.a_reg[1]
+Import proof-constraint: \g.a_reg[2] = \t.a_reg[2]
+Import proof-constraint: \g.a_reg[3] = \t.a_reg[3]
+Import proof-constraint: \g.a_reg[4] = \t.a_reg[4]
+Import proof-constraint: \g.a_reg[5] = \t.a_reg[5]
+Import proof-constraint: \g.a_reg[6] = \t.a_reg[6]
+Import proof-constraint: \g.a_reg[7] = \t.a_reg[7]
+Import proof-constraint: \g.acc[0] = \t.acc[0]
+Import proof-constraint: \g.acc[10] = \t.acc[10]
+Import proof-constraint: \g.acc[11] = \t.acc[11]
+Import proof-constraint: \g.acc[12] = \t.acc[12]
+Import proof-constraint: \g.acc[13] = \t.acc[13]
+Import proof-constraint: \g.acc[14] = \t.acc[14]
+Import proof-constraint: \g.acc[15] = \t.acc[15]
+Import proof-constraint: \g.acc[16] = \t.acc[16]
+Import proof-constraint: \g.acc[17] = \t.acc[17]
+Import proof-constraint: \g.acc[18] = \t.acc[18]
+Import proof-constraint: \g.acc[19] = \t.acc[19]
+Import proof-constraint: \g.acc[1] = \t.acc[1]
+Import proof-constraint: \g.acc[20] = \t.acc[20]
+Import proof-constraint: \g.acc[21] = \t.acc[21]
+Import proof-constraint: \g.acc[22] = \t.acc[22]
+Import proof-constraint: \g.acc[23] = \t.acc[23]
+Import proof-constraint: \g.acc[24] = \t.acc[24]
+Import proof-constraint: \g.acc[25] = \t.acc[25]
+Import proof-constraint: \g.acc[26] = \t.acc[26]
+Import proof-constraint: \g.acc[27] = \t.acc[27]
+Import proof-constraint: \g.acc[28] = \t.acc[28]
+Import proof-constraint: \g.acc[29] = \t.acc[29]
+Import proof-constraint: \g.acc[2] = \t.acc[2]
+Import proof-constraint: \g.acc[30] = \t.acc[30]
+Import proof-constraint: \g.acc[31] = \t.acc[31]
+Import proof-constraint: \g.acc[32] = \t.acc[32]
+Import proof-constraint: \g.acc[33] = \t.acc[33]
+Import proof-constraint: \g.acc[34] = \t.acc[34]
+Import proof-constraint: \g.acc[35] = \t.acc[35]
+Import proof-constraint: \g.acc[36] = \t.acc[36]
+Import proof-constraint: \g.acc[37] = \t.acc[37]
+Import proof-constraint: \g.acc[38] = \t.acc[38]
+Import proof-constraint: \g.acc[39] = \t.acc[39]
+Import proof-constraint: \g.acc[3] = \t.acc[3]
+Import proof-constraint: \g.acc[40] = \t.acc[40]
+Import proof-constraint: \g.acc[41] = \t.acc[41]
+Import proof-constraint: \g.acc[42] = \t.acc[42]
+Import proof-constraint: \g.acc[43] = \t.acc[43]
+Import proof-constraint: \g.acc[44] = \t.acc[44]
+Import proof-constraint: \g.acc[45] = \t.acc[45]
+Import proof-constraint: \g.acc[46] = \t.acc[46]
+Import proof-constraint: \g.acc[47] = \t.acc[47]
+Import proof-constraint: \g.acc[48] = \t.acc[48]
+Import proof-constraint: \g.acc[49] = \t.acc[49]
+Import proof-constraint: \g.acc[4] = \t.acc[4]
+Import proof-constraint: \g.acc[50] = \t.acc[50]
+Import proof-constraint: \g.acc[51] = \t.acc[51]
+Import proof-constraint: \g.acc[52] = \t.acc[52]
+Import proof-constraint: \g.acc[53] = \t.acc[53]
+Import proof-constraint: \g.acc[54] = \t.acc[54]
+Import proof-constraint: \g.acc[55] = \t.acc[55]
+Import proof-constraint: \g.acc[56] = \t.acc[56]
+Import proof-constraint: \g.acc[57] = \t.acc[57]
+Import proof-constraint: \g.acc[58] = \t.acc[58]
+Import proof-constraint: \g.acc[59] = \t.acc[59]
+Import proof-constraint: \g.acc[5] = \t.acc[5]
+Import proof-constraint: \g.acc[60] = \t.acc[60]
+Import proof-constraint: \g.acc[61] = \t.acc[61]
+Import proof-constraint: \g.acc[62] = \t.acc[62]
+Import proof-constraint: \g.acc[63] = \t.acc[63]
+Import proof-constraint: \g.acc[6] = \t.acc[6]
+Import proof-constraint: \g.acc[7] = \t.acc[7]
+Import proof-constraint: \g.acc[8] = \t.acc[8]
+Import proof-constraint: \g.acc[9] = \t.acc[9]
+Import proof-constraint: \g.auto = \t.auto
+Import proof-constraint: \g.b_reg[0] = \t.b_reg[0]
+Import proof-constraint: \g.b_reg[1] = \t.b_reg[1]
+Import proof-constraint: \g.b_reg[2] = \t.b_reg[2]
+Import proof-constraint: \g.b_reg[3] = \t.b_reg[3]
+Import proof-constraint: \g.b_reg[4] = \t.b_reg[4]
+Import proof-constraint: \g.b_reg[5] = \t.b_reg[5]
+Import proof-constraint: \g.b_reg[6] = \t.b_reg[6]
+Import proof-constraint: \g.b_reg[7] = \t.b_reg[7]
+Import proof-constraint: \g.clear_q = \t.clear_q
+Import proof-constraint: \g.i_array.row_en[0] = \t.i_array.row_en[0]
+Import proof-constraint: \g.i_array.row_en[1] = \t.i_array.row_en[1]
+Import proof-constraint: \g.idx[0] = \t.idx[0]
+Import proof-constraint: \g.idx[1] = \t.idx[1]
+Import proof-constraint: \g.idx[2] = \t.idx[2]
+Import proof-constraint: \g.idx[3] = \t.idx[3]
+Import proof-constraint: \g.rsel[4] = \t.rsel[4]
+Import proof-constraint: \g.rsel[5] = \t.rsel[5]
+Import proof-constraint: \g.rsel[6] = \t.rsel[6]
+Import proof-constraint: \g.rsel[7] = \t.rsel[7]
+Import proof-constraint: \g.rst_sync[0] = \t.rst_sync[0]
+Import proof-constraint: \g.rst_sync[1] = \t.rst_sync[1]
+Import proof-constraint: \g.st[0] = \t.st[0]
+Import proof-constraint: \g.st[1] = \t.st[1]
+Import proof-constraint: \g.st[2] = \t.st[2]
+Import proof-constraint: \g.st[30] = \t.st[30]
+Import proof-constraint: \uo_g = \uo_t
+Import proof-constraint: \uio_g = \uio_t
+Import proof-constraint: \oe_g = \oe_t
+Import proof-constraint: \g.icg_gate0 = \t.icg_gate0
+Import proof-constraint: \g.icg_gate1 = \t.icg_gate1
+Final proof equation: { \g.icg_gate1 \g.icg_gate0 \oe_g \uio_g \uo_g \g.st[30] \g.st[2] \g.st[1] \g.st[0] \g.rst_sync[1] \g.rst_sync[0] \g.rsel[7] \g.rsel[6] \g.rsel[5] \g.rsel[4] \g.idx[3] \g.idx[2] \g.idx[1] \g.idx[0] \g.i_array.row_en[1] \g.i_array.row_en[0] \g.clear_q \g.b_reg[7] \g.b_reg[6] \g.b_reg[5] \g.b_reg[4] \g.b_reg[3] \g.b_reg[2] \g.b_reg[1] \g.b_reg[0] \g.auto \g.acc[9] \g.acc[8] \g.acc[7] \g.acc[6] \g.acc[63] \g.acc[62] \g.acc[61] \g.acc[60] \g.acc[5] \g.acc[59] \g.acc[58] \g.acc[57] \g.acc[56] \g.acc[55] \g.acc[54] \g.acc[53] \g.acc[52] \g.acc[51] \g.acc[50] \g.acc[4] \g.acc[49] \g.acc[48] \g.acc[47] \g.acc[46] \g.acc[45] \g.acc[44] \g.acc[43] \g.acc[42] \g.acc[41] \g.acc[40] \g.acc[3] \g.acc[39] \g.acc[38] \g.acc[37] \g.acc[36] \g.acc[35] \g.acc[34] \g.acc[33] \g.acc[32] \g.acc[31] \g.acc[30] \g.acc[2] \g.acc[29] \g.acc[28] \g.acc[27] \g.acc[26] \g.acc[25] \g.acc[24] \g.acc[23] \g.acc[22] \g.acc[21] \g.acc[20] \g.acc[1] \g.acc[19] \g.acc[18] \g.acc[17] \g.acc[16] \g.acc[15] \g.acc[14] \g.acc[13] \g.acc[12] \g.acc[11] \g.acc[10] \g.acc[0] \g.a_reg[7] \g.a_reg[6] \g.a_reg[5] \g.a_reg[4] \g.a_reg[3] \g.a_reg[2] \g.a_reg[1] \g.a_reg[0] } = { \t.icg_gate1 \t.icg_gate0 \oe_t \uio_t \uo_t \t.st[30] \t.st[2] \t.st[1] \t.st[0] \t.rst_sync[1] \t.rst_sync[0] \t.rsel[7] \t.rsel[6] \t.rsel[5] \t.rsel[4] \t.idx[3] \t.idx[2] \t.idx[1] \t.idx[0] \t.i_array.row_en[1] \t.i_array.row_en[0] \t.clear_q \t.b_reg[7] \t.b_reg[6] \t.b_reg[5] \t.b_reg[4] \t.b_reg[3] \t.b_reg[2] \t.b_reg[1] \t.b_reg[0] \t.auto \t.acc[9] \t.acc[8] \t.acc[7] \t.acc[6] \t.acc[63] \t.acc[62] \t.acc[61] \t.acc[60] \t.acc[5] \t.acc[59] \t.acc[58] \t.acc[57] \t.acc[56] \t.acc[55] \t.acc[54] \t.acc[53] \t.acc[52] \t.acc[51] \t.acc[50] \t.acc[4] \t.acc[49] \t.acc[48] \t.acc[47] \t.acc[46] \t.acc[45] \t.acc[44] \t.acc[43] \t.acc[42] \t.acc[41] \t.acc[40] \t.acc[3] \t.acc[39] \t.acc[38] \t.acc[37] \t.acc[36] \t.acc[35] \t.acc[34] \t.acc[33] \t.acc[32] \t.acc[31] \t.acc[30] \t.acc[2] \t.acc[29] \t.acc[28] \t.acc[27] \t.acc[26] \t.acc[25] \t.acc[24] \t.acc[23] \t.acc[22] \t.acc[21] \t.acc[20] \t.acc[1] \t.acc[19] \t.acc[18] \t.acc[17] \t.acc[16] \t.acc[15] \t.acc[14] \t.acc[13] \t.acc[12] \t.acc[11] \t.acc[10] \t.acc[0] \t.a_reg[7] \t.a_reg[6] \t.a_reg[5] \t.a_reg[4] \t.a_reg[3] \t.a_reg[2] \t.a_reg[1] \t.a_reg[0] }
+Import show expression: \clk
+Import show expression: \ena
+Import show expression: \rst_n
+Import show expression: \ui_in
+Import show expression: \uio_in
+
+Solving problem with 57019 variables and 152670 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+
+Warnings: 4 unique messages, 8 total
+End of script. Logfile hash: 49fb3ce13f, CPU: user 1.05s system 0.04s, MEM: 88.73 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)
+Time spent: 93% 1x sat (1 sec), 2% 1x flatten (0 sec), ...

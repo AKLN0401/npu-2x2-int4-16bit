@@ -1,0 +1,37 @@
+A1_git_baseline	INFO	n	HEAD ce832bbafac3472bc7360173b35ae52156fc60fa, 0 uncommitted paths, branch main
+A2_final_netlist	PASS	y	d6f17c20d5446035… runs/wokwi/final/pnl
+B1_verilator_lint	PASS	y	verilator -Wall: 0 warnings
+B2_existing_rtl_seed1	PASS	y	test/test.py 8/8
+B2_existing_rtl_seed2	PASS	y	test/test.py 8/8
+B2_existing_gl_seed1	PASS	y	test/test.py 8/8
+B3_audit_gl_seed1	PASS	y	audit_arith.py 9/9
+B3_audit_gl_seed2	PASS	y	audit_arith.py 9/9
+B3_audit_rtl_seed1	PASS	y	audit_arith.py 9/9
+B3_audit_rtl_seed2	PASS	y	audit_arith.py 9/9
+B3_audit_rtl_seed3	PASS	y	audit_arith.py 9/9
+B4_mutation_check	PASS	y	6/6 RTL mutants killed
+B5_formal_pe_prove	PASS	y	abc pdr: npu_pe next state, all acc states x 256 operand pairs
+B5_formal_pe_nonvacuity	PASS	y	zero-extension mutant fails the proof
+B6_equiv_step	PASS	y	yosys sat induction (step), 98 state bits + outputs + ICG GATE
+B6_equiv_base	PASS	y	yosys sat induction (base), 98 state bits + outputs + ICG GATE
+B6_equiv_nonvacuity	PASS	y	1 NAND2->NOR2 netlist mutant is caught
+B7_sta_icg_reset_ss_n40C_1v60	PASS	y	6 checks MET, 0 unconstrained
+B7_sta_icg_reset_ss_100C_1v60	PASS	y	6 checks MET, 0 unconstrained
+B7_sta_icg_reset_tt_025C_1v80	PASS	y	6 checks MET, 0 unconstrained
+B7_sta_icg_reset_ff_n40C_1v95	PASS	y	6 checks MET, 0 unconstrained
+C1_magic_drc	PASS	y	magic__drc_error__count=0
+C2_lvs	PASS	y	design__lvs_error__count=0
+C3_route_drc	PASS	y	route__drc_errors=0
+C4_antenna	PASS	y	antenna nets=0
+C5_setup_all_corners	PASS	y	setup ws=5.698 ns
+C6_hold_all_corners	PASS	y	hold ws=0.162 ns
+C7_max_cap_fanout	PASS	y	max cap/fanout violations 0
+C8_max_slew	WARN	n	10 max-slew pins (accepted <= 0.84 ns vs 0.75 limit, lib table 1.5)
+C9_utilization	PASS	y	util=0.844
+C10_latch_unmapped	PASS	y	latches 0, unmapped 0, synth check errors 0
+C11_power_grid	PASS	y	IR drop worst 7.31e-05 V
+C12_tt_precheck	PASS	y	15/15 (<npu1x1>/runs/audit/ci_38113024258/precheck_reports/results.md)
+C13_ci_gds_matches_local	PASS	y	gds run 38113024258 on ce832bbafac3472bc7360173b35ae52156fc60fa: success, netlist identical
+C14_gds_xor_ci_vs_local	PASS	y	XOR layers=34 differing=0 top=tt_um_akln0401_npu/tt_um_akln0401_npu bbox=(0,0;161,111.52)
+C15_tt_check_docs	PASS	y	tt_tool.py --check-docs
+D1_cosim_unit_delay	PASS	n	seed 4242, 200k cycles: COSIM seed=4242 cycles=201284 errors=0 | writes A0 418 A1 33

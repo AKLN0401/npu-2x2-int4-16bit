@@ -1,0 +1,229 @@
+SBY 15:45:32 [pe_prove] Removing directory '/work/runs/audit/formal/pe_prove'.
+SBY 15:45:32 [pe_prove] Copy '/work/src/npu_pe.v' to '/work/runs/audit/formal/pe_prove/src/npu_pe.v'.
+SBY 15:45:32 [pe_prove] Copy '/work/runs/audit/formal/pe_props.sv' to '/work/runs/audit/formal/pe_prove/src/pe_props.sv'.
+SBY 15:45:32 [pe_prove] engine_0: abc pdr
+SBY 15:45:32 [pe_mutant] Removing directory '/work/runs/audit/formal/pe_mutant'.
+SBY 15:45:32 [pe_mutant] Copy '/work/runs/audit/formal/npu_pe_mut.v' to '/work/runs/audit/formal/pe_mutant/src/npu_pe_mut.v'.
+SBY 15:45:32 [pe_mutant] Copy '/work/src/npu_pe.v' to '/work/runs/audit/formal/pe_mutant/src/npu_pe.v'.
+SBY 15:45:32 [pe_mutant] Copy '/work/runs/audit/formal/pe_props.sv' to '/work/runs/audit/formal/pe_mutant/src/pe_props.sv'.
+SBY 15:45:32 [pe_mutant] engine_0: abc pdr
+SBY 15:45:32 [pe_prove] base: starting process "cd pe_prove/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY 15:45:32 [pe_mutant] base: starting process "cd pe_mutant/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY 15:45:32 [pe_prove] base: finished (returncode=0)
+SBY 15:45:32 [pe_mutant] base: finished (returncode=0)
+SBY 15:45:32 [pe_prove] prep: starting process "cd pe_prove/model; yosys -ql design_prep.log design_prep.ys"
+SBY 15:45:32 [pe_mutant] prep: starting process "cd pe_mutant/model; yosys -ql design_prep.log design_prep.ys"
+SBY 15:45:32 [pe_prove] prep: finished (returncode=0)
+SBY 15:45:32 [pe_mutant] prep: finished (returncode=0)
+SBY 15:45:32 [pe_prove] aig: starting process "cd pe_prove/model; yosys -ql design_aiger.log design_aiger.ys"
+SBY 15:45:32 [pe_mutant] aig: starting process "cd pe_mutant/model; yosys -ql design_aiger.log design_aiger.ys"
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\a [0] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\a [1] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\a [2] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\a [3] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\b [0] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\b [1] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\b [2] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\b [3] like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\clk like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\step like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\scan_in like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\scan_en like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating undriven bit pe_props.\clear like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: Warning: Treating a total of 13 undriven bits in pe_props like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\a [0] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\a [1] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\a [2] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\a [3] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\b [0] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\b [1] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\b [2] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\b [3] like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\clk like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\step like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\scan_in like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\scan_en like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating undriven bit pe_props.\clear like $anyseq.
+SBY 15:45:33 [pe_prove] aig: Warning: Treating a total of 13 undriven bits in pe_props like $anyseq.
+SBY 15:45:33 [pe_mutant] aig: finished (returncode=0)
+SBY 15:45:33 [pe_mutant] engine_0: starting process "cd pe_mutant; yosys-abc -c 'read_aiger model/design_aiger.aig; fold; strash; pdr -v -l; write_cex -a engine_0/trace.aiw'"
+SBY 15:45:33 [pe_prove] aig: finished (returncode=0)
+SBY 15:45:33 [pe_prove] engine_0: starting process "cd pe_prove; yosys-abc -c 'read_aiger model/design_aiger.aig; fold; strash; pdr -v -l; write_cex -a engine_0/trace.aiw'"
+SBY 15:45:33 [pe_mutant] engine_0: ======== ABC command line "read_aiger model/design_aiger.aig; fold; strash; pdr -v -l; write_cex -a engine_0/trace.aiw"
+SBY 15:45:33 [pe_mutant] engine_0: Warning: The last output is interpreted as a constraint.
+SBY 15:45:33 [pe_mutant] engine_0: VarMax = 300. FrameMax = 10000. QueMax = 0. TimeMax = 199. MonoCNF = no. SkipGen = no. SolveAll = no.
+SBY 15:45:33 [pe_mutant] engine_0: Proved output 4 in frame 0 (trivial).
+SBY 15:45:33 [pe_mutant] engine_0: Frame Clauses                                                     Max Queue Flops Time
+SBY 15:45:33 [pe_mutant] engine_0: 1 : 0 4                                                                 1     4      0.00 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: ======== ABC command line "read_aiger model/design_aiger.aig; fold; strash; pdr -v -l; write_cex -a engine_0/trace.aiw"
+SBY 15:45:33 [pe_prove] engine_0: Warning: The last output is interpreted as a constraint.
+SBY 15:45:33 [pe_prove] engine_0: VarMax = 300. FrameMax = 10000. QueMax = 0. TimeMax = 199. MonoCNF = no. SkipGen = no. SolveAll = no.
+SBY 15:45:33 [pe_prove] engine_0: Proved output 4 in frame 0 (trivial).
+SBY 15:45:33 [pe_prove] engine_0: Frame Clauses                                                     Max Queue Flops Time
+SBY 15:45:33 [pe_prove] engine_0: 1 : 0 4                                                                 1     4      0.00 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 100                                                             2    60      0.03 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] engine_0: 2 : 0 4 100                                                             2    59      0.03 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] engine_0: 2 : 0 4 149                                                             3    60      0.04 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] engine_0: Block =    7  Oblig =   305  Clause =   153  Call =  1267 (sat=67.8%)  Cex =   0  Start =   4
+SBY 15:45:33 [pe_mutant] engine_0: SAT solving =     0.03 sec ( 54.22 %)
+SBY 15:45:33 [pe_mutant] engine_0: unsat     =     0.00 sec (  8.02 %)
+SBY 15:45:33 [pe_mutant] engine_0: sat       =     0.02 sec ( 46.20 %)
+SBY 15:45:33 [pe_mutant] engine_0: Generalize  =     0.03 sec ( 61.11 %)
+SBY 15:45:33 [pe_mutant] engine_0: Push clause =     0.00 sec (  0.15 %)
+SBY 15:45:33 [pe_mutant] engine_0: Ternary sim =     0.00 sec (  7.89 %)
+SBY 15:45:33 [pe_mutant] engine_0: Containment =     0.00 sec (  0.16 %)
+SBY 15:45:33 [pe_mutant] engine_0: CNF compute =     0.00 sec (  1.40 %)
+SBY 15:45:33 [pe_mutant] engine_0: Refinement  =     0.00 sec (  0.04 %)
+SBY 15:45:33 [pe_mutant] engine_0: TOTAL       =     0.05 sec (100.00 %)
+SBY 15:45:33 [pe_mutant] engine_0: Output 2 of miter "model/design_aiger" was asserted in frame 2.  Time =     0.05 sec
+SBY 15:45:33 [pe_mutant] engine_0: finished (returncode=0)
+SBY 15:45:33 [pe_mutant] engine_0: Status returned by engine: FAIL
+SBY 15:45:33 [pe_mutant] engine_0: starting process "cd pe_mutant; yosys-witness aiw2yw engine_0/trace.aiw model/design_aiger.ywa engine_0/trace_aiw.yw"
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 150                                                             2    60      0.05 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] smt2: starting process "cd pe_mutant/model; yosys -ql design_smt2.log design_smt2.ys"
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 200                                                             2    60      0.06 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 250                                                             2    60      0.08 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] smt2: finished (returncode=0)
+SBY 15:45:33 [pe_mutant] engine_0: Converting AIGER witness trace 'engine_0/trace.aiw' to Yosys witness trace 'engine_0/trace_aiw.yw'...
+SBY 15:45:33 [pe_mutant] engine_0: Using Yosys witness AIGER map file 'model/design_aiger.ywa'
+SBY 15:45:33 [pe_mutant] engine_0: Converted 3 time steps.
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 300                                                             2    60      0.10 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] engine_0: finished (returncode=0)
+SBY 15:45:33 [pe_mutant] engine_0: starting process "cd pe_mutant; yosys-smtbmc -s yices --noprogress --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc --yw engine_0/trace_aiw.yw model/design_smt2.smt2"
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 350                                                             2    60      0.12 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 400                                                             2    60      0.14 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 450                                                             2    60      0.16 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] engine_0: ##   0:00:00  Solver: yices
+SBY 15:45:33 [pe_mutant] engine_0: ##   0:00:00  SMT Solver 'yices-smt2' not found in path.
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 500                                                             2    60      0.17 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_mutant] engine_0: finished (returncode=1)
+SBY 15:45:33 [pe_mutant] ERROR: engine_0: Could not determine aigsmt status.
+SBY 15:45:33 [pe_mutant] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 15:45:33 [pe_mutant] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 15:45:33 [pe_mutant] summary: engine_0 (abc pdr) returned FAIL
+SBY 15:45:33 [pe_mutant] summary: engine_0 did not produce any traces
+SBY 15:45:33 [pe_mutant] DONE (ERROR, rc=16)
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 550                                                             2    60      0.19 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 593                                                             2    60      0.21 sec  T/O =  0  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: Timing out on output 2 in frame 2 (retrying in next anytime pass).
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 626                                                             2    61      0.22 sec  T/O =  1  PRV =  1
+SBY 15:45:33 [pe_prove] engine_0: Proved output 0 in frame 2.
+SBY 15:45:33 [pe_prove] engine_0: Proved output 1 in frame 2.
+SBY 15:45:33 [pe_prove] engine_0: Proved output 3 in frame 2.
+SBY 15:45:33 [pe_prove] engine_0: 3 : 0 4 0 0 ~626                                                         0    61      0.23 sec  T/O =  1  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: Starting new anytime pass, reusing clauses.
+SBY 15:45:33 [pe_prove] engine_0: Frame Clauses                                                     Max Queue Flops Time
+SBY 15:45:33 [pe_prove] engine_0: 1 : 0 4 ~622                                                             0     0      0.00 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 49 ~622                                                          2    38      0.02 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 99 ~622                                                          2    40      0.05 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 149 ~622                                                         2    42      0.07 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 199 ~622                                                         2    47      0.09 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 249 ~622                                                         2    47      0.11 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 299 ~622                                                         2    47      0.13 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 349 ~622                                                         2    47      0.16 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 399 ~622                                                         2    47      0.18 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 426 ~622                                                         2    47      0.20 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: Timing out on output 2 in frame 2 (retrying in next anytime pass).
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 426 ~622                                                         0    47      0.20 sec  T/O =  1  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 3 : 0 4 0 0 ~1048                                                        0    47      0.22 sec  T/O =  1  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: All outputs solved or timed out in frame 3.
+SBY 15:45:33 [pe_prove] engine_0: Starting new anytime pass, reusing clauses.
+SBY 15:45:33 [pe_prove] engine_0: Frame Clauses                                                     Max Queue Flops Time
+SBY 15:45:33 [pe_prove] engine_0: 1 : 0 4 ~1039                                                            0     0      0.00 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 49 ~1039                                                         2    38      0.03 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 99 ~1039                                                         2    48      0.05 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 149 ~1039                                                        2    48      0.07 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 199 ~1039                                                        2    48      0.10 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 249 ~1039                                                        2    48      0.13 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 299 ~1039                                                        2    48      0.16 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 349 ~1039                                                        2    48      0.18 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 399 ~1039                                                        2    48      0.20 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 449 ~1039                                                        2    48      0.23 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 499 ~1039                                                        2    48      0.27 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 549 ~1039                                                        2    48      0.30 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 599 ~1039                                                        2    48      0.33 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 649 ~1039                                                        2    48      0.36 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 699 ~1039                                                        2    48      0.39 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 716 ~1039                                                        2    48      0.40 sec  T/O =  0  PRV =  4
+SBY 15:45:33 [pe_prove] engine_0: Timing out on output 2 in frame 2 (retrying in next anytime pass).
+SBY 15:45:33 [pe_prove] engine_0: 2 : 0 4 716 ~1039                                                        0    48      0.40 sec  T/O =  1  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 3 : 0 4 0 0 ~1755                                                        0    48      0.44 sec  T/O =  1  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: All outputs solved or timed out in frame 3.
+SBY 15:45:34 [pe_prove] engine_0: Starting new anytime pass, reusing clauses.
+SBY 15:45:34 [pe_prove] engine_0: Frame Clauses                                                     Max Queue Flops Time
+SBY 15:45:34 [pe_prove] engine_0: 1 : 0 4 ~1755                                                            0     0      0.00 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 49 ~1755                                                         2    38      0.05 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 99 ~1755                                                         2    39      0.07 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 149 ~1755                                                        2    46      0.10 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 199 ~1755                                                        2    46      0.14 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 249 ~1755                                                        2    46      0.17 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 299 ~1755                                                        2    47      0.20 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 349 ~1755                                                        2    47      0.23 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 399 ~1755                                                        2    47      0.26 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 449 ~1755                                                        2    47      0.29 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 499 ~1755                                                        2    47      0.33 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 549 ~1755                                                        2    47      0.36 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 599 ~1755                                                        2    47      0.40 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 649 ~1755                                                        2    47      0.44 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 699 ~1755                                                        2    47      0.47 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 749 ~1755                                                        2    47      0.50 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 799 ~1755                                                        2    47      0.54 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 849 ~1755                                                        2    47      0.56 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 899 ~1755                                                        2    47      0.60 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 949 ~1755                                                        2    47      0.63 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 999 ~1755                                                        2    47      0.68 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 1049 ~1755                                                       2    47      0.71 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 1099 ~1755                                                       2    47      0.76 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 1149 ~1755                                                       2    47      0.79 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 1172 ~1755                                                       2    47      0.81 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: Timing out on output 2 in frame 2 (retrying in next anytime pass).
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 1172 ~1755                                                       0    47      0.81 sec  T/O =  1  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 3 : 0 4 0 0 ~2927                                                        0    47      0.88 sec  T/O =  1  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: All outputs solved or timed out in frame 3.
+SBY 15:45:34 [pe_prove] engine_0: Starting new anytime pass, reusing clauses.
+SBY 15:45:34 [pe_prove] engine_0: Frame Clauses                                                     Max Queue Flops Time
+SBY 15:45:34 [pe_prove] engine_0: 1 : 0 4 ~2927                                                            0     0      0.01 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 49 ~2927                                                         2    44      0.07 sec  T/O =  0  PRV =  4
+SBY 15:45:34 [pe_prove] engine_0: 2 : 0 4 99 ~2927                                                         2    46      0.10 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 149 ~2927                                                        2    46      0.15 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 199 ~2927                                                        2    46      0.19 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 249 ~2927                                                        2    46      0.22 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 299 ~2927                                                        2    46      0.26 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 349 ~2927                                                        2    46      0.31 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 399 ~2927                                                        2    46      0.34 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 449 ~2927                                                        2    46      0.38 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 499 ~2927                                                        2    46      0.42 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 549 ~2927                                                        2    46      0.46 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 599 ~2927                                                        2    46      0.51 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 649 ~2927                                                        2    46      0.55 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 699 ~2927                                                        2    46      0.60 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 749 ~2927                                                        2    46      0.64 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 799 ~2927                                                        2    46      0.69 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 849 ~2927                                                        2    46      0.74 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 899 ~2927                                                        2    46      0.82 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 949 ~2927                                                        2    46      0.86 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 999 ~2927                                                        2    46      0.92 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: 2 : 0 4 1008 ~2927                                                       2    48      0.92 sec  T/O =  0  PRV =  4
+SBY 15:45:35 [pe_prove] engine_0: Proved output 2 in frame 2.
+SBY 15:45:35 [pe_prove] engine_0: 3 : 0 4 0 0 ~3935                                                        0    48      1.08 sec  T/O =  0  PRV =  5
+SBY 15:45:35 [pe_prove] engine_0: Block =   12  Oblig =  7908  Clause =  3952  Call = 64587 (sat=72.6%)  Cex =   0  Start = 210
+SBY 15:45:35 [pe_prove] engine_0: SAT solving =     1.91 sec ( 66.60 %)
+SBY 15:45:35 [pe_prove] engine_0: unsat     =     0.33 sec ( 11.64 %)
+SBY 15:45:35 [pe_prove] engine_0: sat       =     1.58 sec ( 54.96 %)
+SBY 15:45:35 [pe_prove] engine_0: Generalize  =     2.08 sec ( 72.24 %)
+SBY 15:45:35 [pe_prove] engine_0: Push clause =     0.06 sec (  2.02 %)
+SBY 15:45:35 [pe_prove] engine_0: Ternary sim =     0.17 sec (  5.88 %)
+SBY 15:45:35 [pe_prove] engine_0: Containment =     0.04 sec (  1.28 %)
+SBY 15:45:35 [pe_prove] engine_0: CNF compute =     0.07 sec (  2.39 %)
+SBY 15:45:35 [pe_prove] engine_0: Refinement  =     0.00 sec (  0.00 %)
+SBY 15:45:35 [pe_prove] engine_0: TOTAL       =     2.87 sec (100.00 %)
+SBY 15:45:35 [pe_prove] engine_0: Property proved.  Time =     2.87 sec
+SBY 15:45:35 [pe_prove] engine_0: Counter-example is not available.
+SBY 15:45:35 [pe_prove] engine_0: finished (returncode=0)
+SBY 15:45:35 [pe_prove] engine_0: Status returned by engine: PASS
+SBY 15:45:35 [pe_prove] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:03 (3)
+SBY 15:45:35 [pe_prove] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:03 (3)
+SBY 15:45:35 [pe_prove] summary: engine_0 (abc pdr) returned PASS
+SBY 15:45:35 [pe_prove] summary: engine_0 did not produce any traces
+SBY 15:45:35 [pe_prove] DONE (PASS, rc=0)
+SBY 15:45:35 The following tasks failed: ['mutant']

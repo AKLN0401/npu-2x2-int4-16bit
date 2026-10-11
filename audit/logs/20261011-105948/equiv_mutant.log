@@ -1,0 +1,6 @@
+gate names 100, renamed 92, already canonical/ports 8
+gold_named.il {'1': '$flatten\\i_array.\\g_row[1].i_cg.$or$/work/src/dft/clk_gate.v:28$84_Y', '0': '$flatten\\i_array.\\g_row[0].i_cg.$or$/work/src/dft/clk_gate.v:28$84_Y'}
+gate_named.il {'1': '\\_0006_', '0': '\\_0005_'}
+98 state bits
+equiv_step FAIL
+equiv_base FAIL

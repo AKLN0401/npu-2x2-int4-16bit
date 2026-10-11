@@ -1,0 +1,6 @@
+m1_unsigned_mult KILLED TESTS=9 PASS=1 FAIL=8
+m2_zero_extend_product KILLED TESTS=9 PASS=1 FAIL=8
+m3_saturate KILLED TESTS=9 PASS=8 FAIL=1
+m4_lane_swap_row1 KILLED TESTS=9 PASS=2 FAIL=7
+m5_read_zero_extend KILLED TESTS=9 PASS=1 FAIL=8
+m6_sext_from_bit6 KILLED TESTS=9 PASS=3 FAIL=6
