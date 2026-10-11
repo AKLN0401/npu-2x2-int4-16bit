@@ -1,6 +1,6 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# int4 NPU — Tiny Tapeout TTSKY26d (SKY130, 1×1 tile)
+# One-Tile int4 NPU (2x2 MAC Array) for Tiny Tapeout
 
 A 2×2 int4 multiply-accumulate array with 16-bit accumulators, one clock gate per row and a full scan chain
 (96 flops), driven by a host microcontroller over a byte-wide register bus on the pins. Top module

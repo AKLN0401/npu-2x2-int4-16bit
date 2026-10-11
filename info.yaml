@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        "int4 NPU (MAC array, clock gating, scan DFT)"      # Project title
+  title:        "One-Tile int4 NPU (2x2 MAC Array) for Tiny Tapeout"      # Project title
   author:       "AKLN0401"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "int4 outer-product MAC array with per-row clock gating and full scan, driven by a host MCU over pins"      # One line description of what your project does
