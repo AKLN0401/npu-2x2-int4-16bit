@@ -51,16 +51,27 @@ Reset clears all accumulators and operand registers.
 The host is asynchronous to the chip clock. Only the strobe `uio[3]` is synchronized (2 flops + edge detect);
 address and data are sampled directly.
 
-1. Set `uio[2:0]` (address) and `ui[7:0]` (data), raise `uio[3]` (at the same time is fine).
+1. Set `ui[7:0]` (data) and `uio[2:0]` (address), then raise `uio[3]`. Raising the strobe in the same pin
+   update as the address and data is fine, but never before them: the chip samples address and data 2–3 clocks
+   after the strobe rises. A MicroPython host writes `ui_in` and `uio_in` separately, several µs apart, so
+   write `ui_in` first, then `uio_in` with the address and the strobe.
 2. Hold address, data and strobe for at least **4 clock cycles**.
 3. Drop `uio[3]` and keep it low for at least **2 clock cycles** before the next write.
 
 The register changes 2–3 clocks after the strobe rises; a step or clear acts one clock later. `uo[7:0]` shows the
 selected byte combinationally from the registers, so it is valid once the `RSEL` write has completed.
 
+Host rules:
+
+- Keep `uio[3]` low while `rst_n` is low and when it is released. A strobe that is already high at reset
+  release counts as a rising edge and performs one write with whatever address and data are on the pins.
+- Drive `uio[6:0]` at all times and keep `uio[4]` (test_mode) and `uio[5]` (scan_en) low in normal operation.
+  Don't leave them floating: a high `uio[4]` forces the row clocks on and, with `uio[5]`, turns every clock into
+  a scan shift. Configure `uio[7]` as an input on the host.
+
 ## How to test
 
-Set the clock to 50 MHz (any lower frequency works too) and reset the design.
+Set the clock to 50 MHz (any lower frequency works too), drive `uio[6:0]` low and reset the design.
 
 1. Check the ID: write `RSEL = 0x80..0x83`, read `0x4E, 0x22, 0x10, 0x01` on `uo[7:0]`.
 2. Multiply two 2×2 matrices `A·B` (`K` = 2):
@@ -82,9 +93,10 @@ Set the clock to 50 MHz (any lower frequency works too) and reset the design.
 Python (MicroPython on the demo board) pseudocode:
 
     def wr(addr, data):
-        set_pins(ui=data, uio_addr=addr, strobe=1)   # hold >= 4 chip clocks
-        wait_chip_clocks(4)
-        set_pins(strobe=0)                           # low >= 2 chip clocks
+        set_ui(data)                                 # 1. data first
+        set_uio(addr | STROBE)                       # 2. address + strobe; test pins stay 0
+        wait_chip_clocks(4)                          # hold >= 4 chip clocks
+        set_uio(addr)                                # 3. strobe low >= 2 chip clocks
         wait_chip_clocks(2)
 
 ### Scan chain (test mode)
